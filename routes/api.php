@@ -41,10 +41,10 @@ Route::get('/copies/book/{book_id}',[CopieController::class, 'index']); // show 
 Route::get('/copies/copie/{copie_id}',[CopieController::class, 'show']); // show copie info
 Route::post('/copies/{book_id}',[CopieController::class, 'store']); // add copy
 Route::delete('/copies/{copie_id}',[CopieController::class, 'destroy']); // delete a copy
-
+ 
 // Borrowing
 Route::get('/borrowing', [BorrowController::class, 'showBorrowedBooks']);
-Route::post('/borrowing/borrow', [BorrowController::class, 'borrowingInfo']);
-Route::post('/borrowing/borrow/{user_id}/{copy_id}', [BorrowController::class, 'borrowBook']);
-Route::put('/borrowing/returnBook/{borrow_id}', [BorrowController::class, 'returnBook']);
-Route::put('/borrowing/payBorrowedBook/{borrow_id}', [BorrowController::class, 'payBorrowedBook']);
+Route::get('/borrowing/{borrow_id}', [BorrowController::class, 'borrowingInfo']);
+Route::post('/borrowing/borrow', [BorrowController::class, 'borrowBook']);
+Route::put('/borrowing/returnBook', [BorrowController::class, 'returnBook']);
+Route::put('/borrowing/payBorrowedBook', [BorrowController::class, 'payBorrowedBook']);

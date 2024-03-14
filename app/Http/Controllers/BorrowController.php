@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\borrowingRecord;
 use App\Models\Fine;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
+use function PHPUnit\Framework\isNull;
 
 class BorrowController extends Controller
 {
@@ -13,18 +16,23 @@ class BorrowController extends Controller
         return response()->json($data);
     }
 
-    public function borrowBook(Request $request, $user_id, $copy_id) {
-        $data = DB::select('CALL borrow(?,?,?)', array((int)$user_id, (int)$copy_id, (int)$request->borrowing_days));
+    public function borrowingInfo(Request $request, $borrow_id) {
+        $data = borrowingRecord::with('fine')->where('id', $borrow_id)->first();
+        return response()->json([$data]);
+    }
+
+    public function borrowBook(Request $request) {
+        $data = DB::select('CALL borrow(?,?,?)', array((int)$request->user_id, (int)$request->book_id, (int)$request->borrowing_days));
         return response()->json($data);
     }
 
-    public function returnBook(Request $request, $borrow_id) {
-        $data = DB::select('CALL returnBook(?)', array((int)$borrow_id));
+    public function returnBook(Request $request) {
+        $data = DB::select('CALL returnBook(?)', array((int)$request->borrow_id));
         return response()->json($data);
     }
 
-    public function payBorrowedBook(Request $request, $borrow_id) {
-        $fine = Fine::where('borrowing_record_id', $borrow_id)->first();
+    public function payBorrowedBook(Request $request) {
+        $fine = Fine::where('borrowing_record_id', $request->borrow_id)->first();
         if (empty($fine)) {
             return response()->json(["message"=>"Fine Not Exist", 404]);
         } else if ($fine->payment_status == 1) {
