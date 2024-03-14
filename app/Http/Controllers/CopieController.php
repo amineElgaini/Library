@@ -11,11 +11,18 @@ class CopieController extends Controller
 {
     public function index(Request $request, $book_id) {
         $copies = Copie::where('book_id','=',$book_id)->get();
+
+        if (count($copies) == 0)
+            return response()->json(["message"=>"book not found"], 404);
+
         return response()->json($copies);
     }
     
     public function show(Request $request, $copie_id) {
         $copie = Copie::find($copie_id);
+        if (empty($copie))
+            return response()->json(["message"=>"book not found"], 404);
+
         return response()->json($copie);
     }
     
@@ -24,6 +31,9 @@ class CopieController extends Controller
         $numberOfCopies = (int)$request->number;
 
         $book = Book::find($book_id);
+        if (empty($book))
+            return response()->json(["message"=>"book not found"], 404);
+
         $book->number_of_copies += $numberOfCopies;
         $book->save();
 
@@ -44,6 +54,8 @@ class CopieController extends Controller
     
     public function destroy(Request $request, $copie_id) {
         $copie = Copie::find($copie_id);
+        if (empty($copie))
+            return response()->json(["message"=>"book not found"], 404);
 
         $book = Book::find($copie->book_id);
         $book->number_of_copies -= 1;

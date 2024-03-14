@@ -37,8 +37,8 @@ use Illuminate\Http\Request;
     }
 
     public function update(Request $request, $id) {
-        if (Book::where('id', $id)->exists()) {
-            $book = Book::find($id);
+        $book = Book::find($id);
+        if (!empty($book)) {
 
             $book->title = is_null($request->title) ? $book->title : $request->title;
             $book->ISBN = is_null($request->ISBN) ? $book->ISBN : $request->ISBN;
@@ -55,8 +55,8 @@ use Illuminate\Http\Request;
     }
 
     public function destroy($id) {
-        if (Book::where('id', $id)->exists()) {
-            $book = Book::find($id);
+        $book = Book::find($id);
+        if (!empty($book)) {
             $book->delete();
             return response()->json(["message"=>"records deleted"], 202);
         } else {
