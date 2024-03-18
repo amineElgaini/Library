@@ -2,61 +2,66 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Filters\UserFilter;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\UserCollection;
 
 class UserController extends Controller
 {
-    public function index() {
-        $users = User::paginate();
-        return response()->json($users);   
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $filter = new UserFilter();
+        $queryItems = $filter->transform($request);
+
+        $users = User::where($queryItems)->paginate()->appends($request->query());
+        return new UserCollection($users);
     }
 
-    public function show($id) {
-        $user = User::find($id);
-        if (!empty($user)) {
-            $user = User::find($id);
-            return response()->json($user);
-        } else {
-            return response()->json(["messagae"=>"User Not Found"], 404);
-        }
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreUserRequest $request)
+    {
+        return new UserResource(User::create($request->all()));
     }
 
-    public function update(Request $request, $id) {
-        $user = User::find($id);
-        if (!empty($user)) {
-
-            $user->name = is_null($request->name) ? $user->name : $request->name;
-            $user->email = is_null($request->email) ? $user->email : $request->email;
-            $user->password = is_null($request->password) ? $user->password : $request->password;
-
-            $user->save();
-
-            return response()->json(["message"=>"User Updated", 202]);
-        } else {
-            return response()->json(["messagae"=>"User Not Found"], 404);
-        }
+    /**
+     * Display the specified resource.
+     */
+    public function show(User $user)
+    {
+        return new UserResource($user);
     }
 
-    public function store(Request $request) {
-        $user = new User;
-
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = $request->password;
-
-        $user->save();
-
-        return response()->json(["message"=>"user Added"]);
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateUserRequest $request, User $user)
+    {
+        $user->update($request->all());
     }
 
-    public function destroy($id) {
-        $user = User::find($id);
-        if (!empty($user)) {
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(User $user)
+    {
+        try {
             $user->delete();
-            return response()->json(["message"=>"records deleted"], 202);
-        } else {
-            return response()->json(["message"=>"user not found"], 404);
+            return response()->json([
+                'message' => 'Post deleted successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to delete user: ' . $e->getMessage()
+            ], 400);
         }
     }
 }

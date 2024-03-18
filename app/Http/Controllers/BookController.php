@@ -2,65 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\BookFilter;
+use App\Http\Requests\StoreBookRequest;
+use App\Http\Resources\BookCollection;
+use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
 
-    class BookController extends Controller
+class BookController extends Controller
 {
-    public function index() {
-        $books = Book::paginate();
-        return response()->json($books);
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $filter = new BookFilter();
+        $queryItems = $filter->transform($request);
+
+        return new BookCollection(Book::where($queryItems)->paginate()->appends($request->query()));
     }
 
-    public function store(Request $request) {
-        $book = new Book;
-
-        $book->title = $request->title;
-        $book->ISBN = $request->ISBN;
-        $book->publication_date = $request->publication_date;
-        $book->genre = $request->genre;
-        $book->additional_details = $request->additional_details;
-        $book->number_of_copies = 0;
-
-        $book->save();
-
-        return response()->json(["message"=>"book Added"]);
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreBookRequest $request)
+    {
+        return new BookResource(Book::create($request->all()));
     }
 
-    public function show($id) {
-        $book = Book::find($id);
-        if (!empty($book)) {
-            return response()->json($book);
-        } else {
-            return response()->json(["message"=>"book not found"], 404);
-        }
+    /**
+     * Display the specified resource.
+     */
+    public function show(Book $book)
+    {
+        return new BookResource($book);
     }
 
-    public function update(Request $request, $id) {
-        $book = Book::find($id);
-        if (!empty($book)) {
-
-            $book->title = is_null($request->title) ? $book->title : $request->title;
-            $book->ISBN = is_null($request->ISBN) ? $book->ISBN : $request->ISBN;
-            $book->publication_date = is_null($request->publication_date) ? $book->publication_date : $request->publication_date;
-            $book->genre = is_null($request->genre) ? $book->genre : $request->genre;
-            $book->additional_details = is_null($request->additional_details) ? $book->additional_details : $request->additional_details;
-
-            $book->save();
-
-            return response()->json(["message"=>"Book Updated", 202]);
-        } else {
-            return response()->json(["messagae"=>"Book Not Found"], 404);
-        }
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Book $book)
+    {
+        $book->update($request->all());
     }
 
-    public function destroy($id) {
-        $book = Book::find($id);
-        if (!empty($book)) {
-            $book->delete();
-            return response()->json(["message"=>"records deleted"], 202);
-        } else {
-            return response()->json(["message"=>"book not found"], 404);
-        }
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Book $book)
+    {
+        $book->delete();
     }
 }

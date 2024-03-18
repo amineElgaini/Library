@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class borrowingRecord extends Model
+class BorrowingRecord extends Model
 {
     use HasFactory;
 

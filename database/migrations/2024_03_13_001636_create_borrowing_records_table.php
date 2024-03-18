@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('copy_id')->references('id')->on('copies');
             $table->dateTime('borrowing_date');
             $table->dateTime('due_date');
-            $table->dateTime('actual_retrun_date')->nullable();
+            $table->dateTime('actual_return_date')->nullable();
             $table->timestamps();
         });
     }
