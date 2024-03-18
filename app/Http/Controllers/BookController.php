@@ -8,14 +8,17 @@ use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
     public function index(Request $request)
     {
+
         $filter = new BookFilter();
         $queryItems = $filter->transform($request);
 
@@ -27,6 +30,7 @@ class BookController extends Controller
      */
     public function store(StoreBookRequest $request)
     {
+
         return new BookResource(Book::create($request->all()));
     }
 

@@ -23,11 +23,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('users', UserController::class);
+Route::apiResource('users', UserController::class)->middleware(['auth:sanctum', 'can:admin']);
 
-Route::apiResource('books', BookController::class);
-Route::apiResource('books.copies', CopyController::class)->shallow();
+Route::apiResource('books', BookController::class)->middleware(['auth:sanctum', 'can:admin'])->except(['index', 'show']);
+Route::apiResource('books', BookController::class)->only(['index', 'show']);
 
-Route::apiResource('borrowingRecords', BorrowingRecordController::class);
-Route::post('/borrowingRecords/returnBorrowedBook', [BorrowingRecordController::class, 'returnBorrowedBook']);
-Route::post('/borrowingRecords/payBorrowedBook', [BorrowingRecordController::class, 'payBorrowedBook']);
+
+Route::group(['middleware' => ['auth:sanctum', 'can:admin']], function () {
+
+    Route::apiResource('books.copies', CopyController::class)->shallow();
+    
+    Route::apiResource('borrowingRecords', BorrowingRecordController::class);
+    Route::post('/borrowingRecords/returnBorrowedBook', [BorrowingRecordController::class, 'returnBorrowedBook']);
+    Route::post('/borrowingRecords/payBorrowedBook', [BorrowingRecordController::class, 'payBorrowedBook']);
+
+});
+
+
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);
+Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');

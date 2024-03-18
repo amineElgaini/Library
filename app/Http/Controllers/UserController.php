@@ -9,6 +9,7 @@ use App\Filters\UserFilter;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserCollection;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -17,6 +18,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        // $this->authorize("viewAny", User::class);
+        
         $filter = new UserFilter();
         $queryItems = $filter->transform($request);
 
@@ -63,5 +66,41 @@ class UserController extends Controller
                 'error' => 'Failed to delete user: ' . $e->getMessage()
             ], 400);
         }
+    }
+
+    public function register(Request $request)
+    {
+        $newUser = User::create([
+            "name" => $request->input('name'),
+            "email" => $request->input('email'),
+            "password" => $request->input('password'),
+        ]);
+
+        return $newUser;
+    }
+
+    public function login(Request $request)
+    {
+        $user = User::where('email', $request->input('email'))->first();
+        if (!$user) {
+            return response()->json(["message" => "user not found"], 401);
+        }
+        if (!Hash::check($request->input("password"), $user->password)) {
+            return response()->json(["message" => "wrong password"], 401);
+        }
+
+        $token = $user->createToken("auth_token")->plainTextToken;
+
+        return response()->json(["token" => $token]);
+
+    }
+
+    public function logout(Request $request)
+    {
+        auth()->user()->tokens()->delete();
+        return [
+            'message',
+            'loged out',
+        ];
     }
 }
