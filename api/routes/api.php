@@ -23,12 +23,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// users
 Route::apiResource('users', UserController::class)->middleware(['auth:sanctum', 'can:admin']);
 
+// books
 Route::apiResource('books', BookController::class)->middleware(['auth:sanctum', 'can:admin'])->except(['index', 'show']);
 Route::apiResource('books', BookController::class)->only(['index', 'show']);
 
-
+// copies and borrowing records
 Route::group(['middleware' => ['auth:sanctum', 'can:admin']], function () {
 
     Route::apiResource('books.copies', CopyController::class)->shallow();
@@ -39,7 +41,7 @@ Route::group(['middleware' => ['auth:sanctum', 'can:admin']], function () {
 
 });
 
-
+// login
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
