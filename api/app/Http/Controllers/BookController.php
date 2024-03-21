@@ -22,7 +22,8 @@ class BookController extends Controller
         $filter = new BookFilter();
         $queryItems = $filter->transform($request);
 
-        return new BookCollection(Book::where($queryItems)->paginate()->appends($request->query()));
+        return new BookCollection(Book::where($queryItems)->paginate()->appends($request->query()))
+        ;
     }
 
     /**

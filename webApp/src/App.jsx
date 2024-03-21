@@ -1,17 +1,19 @@
-import { Button } from "@/components/ui/button";
-import { ThemeProvider } from "@/components/theme-provider";
-import { BrowserRouter, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
+import Books from "./pages/Books/Books";
+import NavBar from "./components/Navbar";
+import BooksDetails from "./pages/Books/BooksDetails";
 function App() {
     return (
         <>
-            <BrowserRouter>
-                <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-                    <Routes>
-                        <Route path="home"></Route>
-                    </Routes>
-                </ThemeProvider>
-            </BrowserRouter>
+            <NavBar />
+
+            <div className="mb-10">
+                <Routes>
+                    <Route path="books" element={<Books />} />
+                    <Route path="books/:id" element={<BooksDetails />} />
+                </Routes>
+            </div>
         </>
     );
 }
