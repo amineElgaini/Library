@@ -3,6 +3,7 @@
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\BorrowingRecordController;
+use App\Http\Controllers\CookieController;
 use App\Http\Controllers\CopyController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -34,7 +35,7 @@ Route::apiResource('books', BookController::class)->only(['index', 'show']);
 Route::group(['middleware' => ['auth:sanctum', 'can:admin']], function () {
 
     Route::apiResource('books.copies', CopyController::class)->shallow();
-    
+
     Route::apiResource('borrowingRecords', BorrowingRecordController::class);
     Route::post('/borrowingRecords/returnBorrowedBook', [BorrowingRecordController::class, 'returnBorrowedBook']);
     Route::post('/borrowingRecords/payBorrowedBook', [BorrowingRecordController::class, 'payBorrowedBook']);
@@ -42,6 +43,7 @@ Route::group(['middleware' => ['auth:sanctum', 'can:admin']], function () {
 });
 
 // login
-Route::post('/register', [UserController::class, 'register']);
-Route::post('/login', [UserController::class, 'login']);
+Route::post('register', [UserController::class, 'register']);
+Route::post('login', [UserController::class, 'login']);
+Route::get('getLogedInUserInfo', [UserController::class, 'getLogedInUserInfo'])->middleware('auth:sanctum');
 Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');

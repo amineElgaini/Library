@@ -10,6 +10,8 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserCollection;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Response;
+
 
 class UserController extends Controller
 {
@@ -19,7 +21,8 @@ class UserController extends Controller
     public function index(Request $request)
     {
         // $this->authorize("viewAny", User::class);
-        
+        // $value = $request->cookie('token');
+        // return $value;
         $filter = new UserFilter();
         $queryItems = $filter->transform($request);
 
@@ -90,9 +93,21 @@ class UserController extends Controller
         }
 
         $token = $user->createToken("auth_token")->plainTextToken;
+        $roles = $user->permissions()->get()->pluck('id');
 
-        return response()->json(["token" => $token]);
+        return response()->json(['roles' => $roles, 'name' => $user->name, 'token' => $token]);
 
+        // $response = new Response();
+        // $response->withCookie(cookie('token', $token));
+        // return $response;
+    }
+
+    public function getLogedInUserInfo(Request $request)
+    {
+        $user = $request->user();
+        $roles = $user->permissions()->get()->pluck('id');
+
+        return response()->json(['roles' => $roles, 'name' => $user->name]);
     }
 
     public function logout(Request $request)
