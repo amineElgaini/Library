@@ -25,7 +25,7 @@ function Login() {
     try {
       const response = await axios.post(LINK, { email, password });
       const auth = {
-        user: response?.data.name,
+        name: response?.data.name,
         roles: response?.data.roles,
       };
       localStorage.setItem("accessToken", response?.data.token);
@@ -33,7 +33,7 @@ function Login() {
 
       navigate(from, { replace: true });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -104,15 +104,6 @@ function Login() {
                 </Button>
               </div>
 
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Don’t have an account yet?{" "}
-                <a
-                  href="#"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >
-                  Sign up
-                </a>
-              </p>
             </form>
           </div>
         </div>

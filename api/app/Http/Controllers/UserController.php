@@ -11,7 +11,7 @@ use App\Http\Resources\UserResource;
 use App\Http\Resources\UserCollection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Response;
-
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -43,7 +43,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return new UserResource($user);
+        return new UserResource(DB::select("SELECT * FROM vw_more_user_info where id = $user->id")[0]);
     }
 
     /**
@@ -62,7 +62,7 @@ class UserController extends Controller
         try {
             $user->delete();
             return response()->json([
-                'message' => 'Post deleted successfully'
+                'message' => 'User deleted successfully'
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

@@ -15,16 +15,16 @@ import { AuthProvider } from "./context/AuthProvider";
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-        <BrowserRouter>
-            <QueryClientProvider client={queryClient}>
-                <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-                    <AuthProvider>
-                        <App />
-                    </AuthProvider>
-                </ThemeProvider>
-                <ReactQueryDevtools />
-            </QueryClientProvider>
-        </BrowserRouter>
-    </React.StrictMode>
+  <React.StrictMode>
+    <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+            <App />
+          </ThemeProvider>
+        </AuthProvider>
+        <ReactQueryDevtools />
+      </QueryClientProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 );

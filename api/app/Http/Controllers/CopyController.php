@@ -32,25 +32,27 @@ class CopyController extends Controller
     {
         try {
             DB::beginTransaction();
-
+            
             $numberOfCopies = (int) $request->number;
             $book->number_of_copies += $numberOfCopies;
-
+            
             $data = [];
             for ($i = 0; $i < $numberOfCopies; $i++) {
                 $data[] = ["book_id" => $book->id];
             }
-
+            
             $timestamp = Carbon::now();
             foreach ($data as &$record) {
                 $record['created_at'] = $timestamp;
-                $record['updatded_at'] = $timestamp;
+                $record['updated_at'] = $timestamp;
             }
-
             Copy::insert($data);
             $book->save();
+            
             DB::commit();
+            return response()->json(['success']);
         } catch (\Exception $e) {
+            return response()->json(['error']);
             DB::rollBack();
         }
     }

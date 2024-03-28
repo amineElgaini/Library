@@ -1,25 +1,47 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { request } from "@/utils/axios-utils";
+import { toast } from "sonner";
 
 const fetchUsers = ({ queryKey }) => {
   const params = queryKey[1];
-  return request({ url: "/books", params});
+  return request({ url: "/books", params });
 };
 
-// const addUser = (user) => {
-//   return request({ url: "/users", method: "post", data: user });
-// };
+const returnBorrowedBook = (borrowInfo) => {
+  return request({
+    url: "/borrowingRecords/returnBorrowedBook",
+    method: "post",
+    data: borrowInfo,
+  });
+};
 
-// const getLogedInUserInfo = () => {
-//   return request({ url: "/getLogedInUserInfo" });
-// };
+const payBorrowedBook = (borrowInfo) => {
+  return request({
+    url: "/borrowingRecords/payBorrowedBook",
+    method: "post",
+    data: borrowInfo,
+  });
+};
 
-// export const useGetLogedInUserInfo = () => {
-//   return useQuery({
-//     queryKey: ["getLogedInUserInfo"],
-//     queryFn: getLogedInUserInfo,
-//   });
-// };
+const borrowBook = (borrowInfo) => {
+  return request({
+    url: "/borrowingRecords",
+    method: "post",
+    data: borrowInfo,
+  });
+};
+
+const borrowingRecordsData = ({ queryKey }) => {
+  const params = queryKey[1];
+  return request({ url: "/borrowingRecords", params });
+};
+
+export const useBorrowingRecordsData = (filters) => {
+  return useQuery({
+    queryKey: ["borrowingRecordsData", filters],
+    queryFn: borrowingRecordsData,
+  });
+};
 
 export const useBooksData = (filters) => {
   return useQuery({
@@ -28,6 +50,24 @@ export const useBooksData = (filters) => {
   });
 };
 
-// export const useAddUserData = () => {
-//   return useMutation({ mutationFn: addUser });
-// };
+export const useReturnBorrowedBook = () => {
+  return useMutation({
+    mutationFn: returnBorrowedBook,
+    onError: (error) => toast.error(error.message),
+    onSuccess: () => toast.success("Book Returned Succefuly"),
+  });
+};
+export const usePayBorrowedBook = () => {
+  return useMutation({
+    mutationFn: payBorrowedBook,
+    onError: (error) => toast.error(error.message),
+    onSuccess: () => toast.success("Book Paid Succefuly"),
+  });
+};
+export const useBorrowBook = () => {
+  return useMutation({
+    mutationFn: borrowBook,
+    onError: (error) => toast.error(error.message),
+    onSuccess: () => toast.success("Book Borrowed Succefuly"),
+  });
+};

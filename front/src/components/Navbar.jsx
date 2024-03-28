@@ -12,7 +12,8 @@ import { ModeToggle } from "./mode-toggle";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import useAuth from "@/hooks/useAuth";
-import { Toaster } from "./ui/sonner";
+
+import { Toaster } from "sonner";
 
 const dashBoardLinks = [
   {
@@ -30,6 +31,11 @@ const dashBoardLinks = [
     name: "Borrowing Records",
     desc: "Manage Borrowed Books, Return/Pay a book",
   },
+  // {
+  //   link: "/BooksDashboard",
+  //   name: "Books Dashboard",
+  //   desc: "Manage Books, Return/Pay a book",
+  // },
 ];
 
 // admin: 1,
@@ -38,6 +44,8 @@ const dashBoardLinks = [
 
 function NavBar() {
   const { auth } = useAuth();
+  console.log(auth)
+
   return (
     <>
       <div className="mt-2 pb-2 border-b-2 border-b-slate-600">
@@ -92,7 +100,7 @@ function NavBar() {
       </div>
       <div className="my-20">
         <Outlet />
-        <Toaster />
+        <Toaster richColors />
       </div>
     </>
   );

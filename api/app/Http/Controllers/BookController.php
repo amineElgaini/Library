@@ -8,6 +8,7 @@ use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class BookController extends Controller
@@ -22,7 +23,12 @@ class BookController extends Controller
         $filter = new BookFilter();
         $queryItems = $filter->transform($request);
 
-        return new BookCollection(Book::where($queryItems)->paginate()->appends($request->query()));
+        return DB::table('books')
+            ->join('copies', 'books.id', '=', 'copies.book_id')
+            ->select("book_id as bookId", "title", "additional_details as additionalDetails", "isbn", "genre", "number_of_copies as numberOfCopies", DB::raw("cast(sum(availability_status) as int) as availableCopies"))
+            ->groupBy('books.id')
+            ->where($queryItems)
+            ->paginate();
     }
 
     /**

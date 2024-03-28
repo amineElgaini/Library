@@ -9,7 +9,7 @@ export const request = ({...options}) => {
   const onSuccess = response => response
   const onError = error => {
     // like go to loggin page
-    return error;
+    return Promise.reject(error.response.data);
   }
   return client({...options}).then(onSuccess).catch(onError);
 }

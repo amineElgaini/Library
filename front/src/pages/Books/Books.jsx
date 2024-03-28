@@ -16,7 +16,7 @@ function Books() {
 
   useEffect(() => {
     setFilter({
-      "page": filters.page,
+      page: filters.page,
       "title[eq]": filters.title,
       "genre[eq]": filters.genre,
     });
@@ -51,10 +51,10 @@ function Books() {
           <Button
             size="sm"
             className="p-2"
-            disabled={data?.data.meta.current_page === 1}
+            disabled={data?.data?.current_page === 1}
             onClick={() =>
               setFilters((p) => {
-                return { ...p, page: data?.data.meta.current_page - 1 };
+                return { ...p, page: data?.data?.current_page - 1 };
               })
             }
           >
@@ -72,12 +72,10 @@ function Books() {
           <Button
             size="sm"
             className="p-2"
-            disabled={
-              data?.data.meta.last_page === data?.data.meta.current_page
-            }
+            disabled={data?.data.last_page === data?.data.current_page}
             onClick={() => {
               setFilters((p) => {
-                return { ...p, page: data?.data.meta.current_page + 1 };
+                return { ...p, page: data?.data.current_page + 1 };
               });
             }}
           >
@@ -100,9 +98,10 @@ function Books() {
           Array(10)
             .fill(null)
             .map((_, index) => <CardLoading key={index} />)}
-        {data?.data?.data.map((book) => {
-          return <BookCard key={book.id} book={book} />;
-        })}
+        {data?.data.data &&
+          data?.data.data.map((book) => {
+            return <BookCard key={book.bookId} book={book} />;
+          })}
       </div>
     </div>
   );
