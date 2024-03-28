@@ -54,7 +54,7 @@ export const useReturnBorrowedBook = () => {
   return useMutation({
     mutationFn: returnBorrowedBook,
     onError: (error) => toast.error(error.message),
-    onSuccess: () => toast.success("Book Returned Succefuly"),
+    onSuccess: () => toast.success("User Updated Succefuly"),
   });
 };
 export const usePayBorrowedBook = () => {

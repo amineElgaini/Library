@@ -13,11 +13,14 @@ import EditUser from "./component/EditUser";
 import MoreUserDetails from "./component/MoreUserDetails";
 import DeleteUser from "./component/DeleteUser";
 
+import AddUser from "./component/AddUser";
+
 function Users() {
   const { data } = useUsersData();
 
   return (
     <div className="container">
+      <AddUser/>
       <Table className="mx-auto">
         <TableCaption>Table Of Users</TableCaption>
         <TableHeader>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Filters\BookFilter;
 use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\UpdateBookRequest;
 use App\Http\Resources\BookCollection;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
@@ -51,7 +52,7 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Book $book)
+    public function update(UpdateBookRequest $request, Book $book)
     {
         $book->update($request->all());
     }

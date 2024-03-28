@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserRequest extends FormRequest
+class UpdateBookRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class UpdateUserRequest extends FormRequest
     {
         $method = $this->method();
 
-        if ($method=='PUT') {
+        if ($method == 'PUT') {
             return [
                 "title" => ['required', 'string'],
                 "ISBN" => ['required', 'string'],

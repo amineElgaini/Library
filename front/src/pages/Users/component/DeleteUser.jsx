@@ -18,8 +18,8 @@ function DeleteUser({user}) {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger>
-        <TrashIcon className="text-red-500  cursor-pointer" />
+      <AlertDialogTrigger className="hover:bg-red-500/40 duration-300 transition rounded-full p-2 text-red-500 cursor-pointer">
+        <TrashIcon width={19} height={19} className="text-red-500  cursor-pointer" />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

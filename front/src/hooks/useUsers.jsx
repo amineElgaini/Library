@@ -16,15 +16,25 @@ const deleteUser = (id) => {
     method: "delete",
   });
 };
-// const updateUser = (user) => {
-//   return request({ url: "/users", method: "post", data: user });
-// };
+
+const updateUser = (user) => {
+  return request({ url: `/users/${user.id}`, method: "patch", data: user });
+};
+
 const addUser = (user) => {
   return request({ url: "/users", method: "post", data: user });
 };
 
 const getLogedInUserInfo = () => {
   return request({ url: "/getLogedInUserInfo" });
+};
+
+export const useEditUser = () => {
+  return useMutation({
+    mutationFn: updateUser,
+    onError: (error) => toast.error(error.message),
+    onSuccess: () => toast.success("User Updated Succefuly"),
+  });
 };
 
 export const useDeleteUser = () => {
@@ -35,12 +45,11 @@ export const useDeleteUser = () => {
   });
 };
 
-export const useGetUser = (id /*, enabled = true */) => {
-  console.log('id',id)
+export const useGetUser = (id) => {
+  console.log("id", id);
   return useQuery({
     queryKey: ["users", id],
     queryFn: fetchUser,
-    // enabled: false,
   });
 };
 
@@ -59,5 +68,9 @@ export const useUsersData = () => {
 };
 
 export const useAddUserData = () => {
-  return useMutation({ mutationFn: addUser });
+  return useMutation({
+    mutationFn: addUser,
+    onError: (error) => toast.error(error.message),
+    onSuccess: () => toast.success("User Added Succefuly"),
+  });
 };
