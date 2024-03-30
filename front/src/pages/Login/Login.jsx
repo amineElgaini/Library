@@ -2,24 +2,30 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useState } from "react";
 import useAuth from "@/hooks/useAuth";
-import { useNavigate, useLocation } from "react-router-dom";
-
-const LINK = `${import.meta.env.VITE_API_KEY}/api/login`;
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
 
 function Login() {
-  const { setAuth } = useAuth();
+  const { auth, setAuth } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
+
   const from = location?.state?.from.pathname || "/books";
 
   const [email, setEmail] = useState("amine@gmail.com");
   const [password, setPassword] = useState("amine");
 
+  // if (auth.username) {
+  //   return <Navigate to="/profile" replace />;
+  // }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(LINK, { email, password });
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_KEY}/api/login`,
+        { email, password }
+      );
       const auth = {
         username: response?.data.username,
         roles: response?.data.roles,
@@ -27,7 +33,7 @@ function Login() {
 
       localStorage.setItem("accessToken", response?.data.token);
       setAuth(auth);
-      navigate(from);
+      navigate(from, { replace: true });
     } catch (error) {
       // console.log(error);
     }

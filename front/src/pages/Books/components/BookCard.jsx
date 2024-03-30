@@ -29,17 +29,15 @@ function BookCard({ book }) {
                 }
               />
               <div className="space-y-1">
-                <h4 className="text-sm font-semibold">{book.title}</h4>
+                <h4 className="text-md font-semibold">{book.title}</h4>
                 <p className="text-sm h-[50px]">
                   {book.additionalDetails.substring(0, 50)}...
                 </p>
                 <div className="flex justify-between items-center pt-2">
                   <Badge variant="secondary">{book.genre}</Badge>
-                  <div className="flex items-center">
+                  <div className="flex gap-1 text-xs text-muted-foreground">
+                    <span>{formattedDate}</span>
                     <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />{" "}
-                    <span className="text-xs text-muted-foreground">
-                      {formattedDate}
-                    </span>
                   </div>
                 </div>
               </div>

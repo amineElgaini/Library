@@ -33,25 +33,27 @@ const dashBoardLinks = [
     name: "Borrowing Records",
     desc: "Manage Borrowed Books, Return/Pay a book",
   },
-  // {
-  //   link: "/BooksDashboard",
-  //   name: "Books Dashboard",
-  //   desc: "Manage Books, Return/Pay a book",
-  // },
+  {
+    link: "/manageBooks",
+    name: "Books Dashboard",
+    desc: "Manage Books/Copies, Add, Create, Update Books/Copies",
+  },
 ];
 
 // admin: 4,
 
 function NavBar() {
+  // this state rerender the component when the auth is set
   const [authFinished, setAuthFinished] = useState(false);
+
   const { auth, setAuth } = useAuth();
   const { data, isSuccess, isError, isLoading } = useGetLogedInUserInfo();
 
+  // set the auth if exist and rerender after fetching is finished
   useEffect(() => {
     if (isSuccess) {
       setAuth({ roles: data.data.roles, username: data.data.username });
       setAuthFinished(true);
-      console.log(isError, isSuccess)
     } else if (isError) {
       setAuthFinished(true);
     }

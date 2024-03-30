@@ -10,6 +10,7 @@ import Login from "./pages/Login/Login";
 import RequireAuth from "./components/RequireAuth";
 import Profile from "./pages/Profile/Profile";
 import Unauthorized from "./components/Unauthorized";
+import ManageBooks from "./pages/manageBooks/ManageBooks";
 const ROLES = {
   admin: 4,
 };
@@ -33,6 +34,7 @@ function App() {
             <Route path="users" element={<Users />} />
             <Route path="borrowBook" element={<BorrowBook />} />
             <Route path="borrowingRecords" element={<BorrowingRecords />} />
+            <Route path="manageBooks" element={<ManageBooks />} />
           </Route>
         </Route>
         
