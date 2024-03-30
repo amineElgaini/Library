@@ -7,31 +7,27 @@ import { useNavigate, useLocation } from "react-router-dom";
 const LINK = `${import.meta.env.VITE_API_KEY}/api/login`;
 
 function Login() {
-  const { auth, setAuth } = useAuth();
+  const { setAuth } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location?.state?.from.pathname || "/";
+  const from = location?.state?.from.pathname || "/books";
 
-  const [email, setEmail] = useState("Wilma_Murray@gmail.com");
-  const [password, setPassword] = useState("test");
-
-  if (auth?.name) {
-    navigate(from, { replace: true });
-  }
+  const [email, setEmail] = useState("amine@gmail.com");
+  const [password, setPassword] = useState("amine");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(LINK, { email, password });
       const auth = {
-        name: response?.data.name,
+        username: response?.data.username,
         roles: response?.data.roles,
       };
+
       localStorage.setItem("accessToken", response?.data.token);
       setAuth(auth);
-
-      navigate(from, { replace: true });
+      navigate(from);
     } catch (error) {
       // console.log(error);
     }
@@ -74,7 +70,7 @@ function Login() {
                   name="email"
                   id="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="name@company.com"
+                  placeholder="name@gmail.com"
                   required=""
                 />
               </div>
@@ -103,7 +99,6 @@ function Login() {
                   Login
                 </Button>
               </div>
-
             </form>
           </div>
         </div>

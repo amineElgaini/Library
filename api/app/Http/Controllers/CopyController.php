@@ -21,7 +21,7 @@ class CopyController extends Controller
         $queryItems = $filter->transform($request);
         $queryItems[] = ['book_id', '=', $book_id];
 
-        $copie = Copy::where($queryItems)->paginate()->appends($request->query());
+        $copie = Copy::where($queryItems)->paginate();
         return $copie;
     }
 
@@ -32,15 +32,15 @@ class CopyController extends Controller
     {
         try {
             DB::beginTransaction();
-            
+
             $numberOfCopies = (int) $request->number;
             $book->number_of_copies += $numberOfCopies;
-            
+
             $data = [];
             for ($i = 0; $i < $numberOfCopies; $i++) {
                 $data[] = ["book_id" => $book->id];
             }
-            
+
             $timestamp = Carbon::now();
             foreach ($data as &$record) {
                 $record['created_at'] = $timestamp;
@@ -48,12 +48,12 @@ class CopyController extends Controller
             }
             Copy::insert($data);
             $book->save();
-            
+
             DB::commit();
-            return response()->json(['success']);
+            return response()->json(['message' => 'success'], 200);
         } catch (\Exception $e) {
-            return response()->json(['error']);
             DB::rollBack();
+            return response()->json(['message' => 'error'], 400);
         }
     }
 
@@ -70,7 +70,6 @@ class CopyController extends Controller
      */
     public function update(Request $request, Book $copy)
     {
-
     }
 
     /**
@@ -85,8 +84,10 @@ class CopyController extends Controller
             $book->save();
             $copy->delete();
             DB::commit();
+            return response()->json(['message' => 'success'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
+            return response()->json(['message' => 'error'], 400);
         }
     }
 }

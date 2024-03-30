@@ -37,7 +37,7 @@ function BorrowBookButton({ bookId }) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Select a User To Borrow Book [ {bookId} ]</DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="flex flex-col ">
             <div className="mt-4 flex w-full max-w-sm items-center space-x-2">
               <Input
                 onChange={(e) => setUserId(e.target.value)}
@@ -49,10 +49,15 @@ function BorrowBookButton({ bookId }) {
             <div className="mt-2">
               <h6>UserId: {user?.data?.data.id}</h6>
               <p>UserEmail: {user?.data?.data.email}</p>
-              <p>UserName: {user?.data?.data.name}</p>
+              <p>UserName: {user?.data?.data.username}</p>
             </div>
-            <DialogClose /*  disabled={true} */>
+            <DialogClose
+              className=""
+              disabled={user?.data?.data.id === undefined}
+            >
               <Button
+                variant="green"
+                disabled={user?.data?.data.id === undefined}
                 onClick={() => {
                   handleBorrow();
                 }}

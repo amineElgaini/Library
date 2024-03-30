@@ -11,16 +11,13 @@ import RequireAuth from "./components/RequireAuth";
 import Profile from "./pages/Profile/Profile";
 import Unauthorized from "./components/Unauthorized";
 const ROLES = {
-  admin: 1,
-  user: 2,
-  manage_users: 3,
+  admin: 4,
 };
 
 function App() {
   return (
     <>
       <Routes>
-
         <Route path="login" element={<Login />} />
         <Route path="unauthorized" element={<Unauthorized />} />
 
@@ -28,7 +25,7 @@ function App() {
           <Route path="books" element={<Books />} />
           <Route path="books/:id" element={<BooksDetails />} />
 
-          <Route element={<RequireAuth allowedRoles={[ROLES.user]} />}>
+          <Route element={<RequireAuth /* allowedRoles={[ROLES.user]} */ />}>
             <Route path="profile" element={<Profile />} />
           </Route>
 
@@ -38,7 +35,6 @@ function App() {
             <Route path="borrowingRecords" element={<BorrowingRecords />} />
           </Route>
         </Route>
-        
       </Routes>
     </>
   );

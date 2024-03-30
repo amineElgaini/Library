@@ -23,15 +23,15 @@ class UpdateUserRequest extends FormRequest
     {
         $method = $this->method();
 
-        if ($method=='PUT') {
+        if ($method == 'PUT') {
             return [
-                'name' => ['required'],
+                'username' => ['string', 'required', 'unique:users,username'],
                 'email' => ['required', 'email'],
                 'password' => ['required'],
             ];
         } else {
             return [
-                'name' => ['sometimes', 'required'],
+                'username' => ['sometimes', 'string', 'required', 'unique:users,username'],
                 'email' => ['sometimes', 'required', 'email'],
                 'password' => ['sometimes', 'required'],
             ];

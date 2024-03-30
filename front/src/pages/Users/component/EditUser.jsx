@@ -15,13 +15,13 @@ import { Pencil1Icon } from "@radix-ui/react-icons";
 import { useEditUser } from "@/hooks/useUsers";
 import { Loader2 } from "lucide-react";
 function EditUser({ user = {} }) {
-  const [name, setName] = useState(user.name);
+  const [username, setUserName] = useState(user.username);
   const [email, setEmail] = useState(user.email);
   const { mutate, isPending } = useEditUser();
 
   return (
     <Dialog>
-      <DialogTrigger className="hover:bg-blue-500/40 duration-300 transition rounded-full p-2 text-blue-500 cursor-pointer">
+      <DialogTrigger className="hover:bg-blue-500/40 duration-300 transition rounded-full p-1 text-blue-500 cursor-pointer">
         <Pencil1Icon
           width={19}
           height={19}
@@ -37,13 +37,13 @@ function EditUser({ user = {} }) {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
+            <Label htmlFor="username" className="text-right">
+              userName
             </Label>
             <Input
-              id="name"
-              onChange={(e) => setName(e.target.value)}
-              value={name}
+              id="username"
+              onChange={(e) => setUserName(e.target.value)}
+              value={username}
               className="col-span-3"
             />
           </div>
@@ -62,7 +62,7 @@ function EditUser({ user = {} }) {
         <DialogFooter>
           <Button
             onClick={() => {
-              mutate({ id: user.id, name, email });
+              mutate({ id: user.id, username, email });
             }}
             disabled={isPending ? true : false}
           >

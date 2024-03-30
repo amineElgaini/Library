@@ -7,12 +7,11 @@ use Illuminate\Http\Request;
 class UserFilter extends ApiFilter
 {
     protected $safeParms = [
-        'name' => ['eq'],
+        'username' => ['eq', 'like'],
     ];
     protected $columnMap = [];
     protected $operatorMap = [
         'eq' => '=',
+        'like' => 'like',
     ];
-
-
 }

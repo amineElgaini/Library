@@ -14,7 +14,6 @@ function BorrowingRecords() {
   // });
 
   const { data, isError } = useBorrowingRecordsData({ includeFine: true });
-  console.log(data?.data?.data);
   // useEffect(() => {
   //   setFilter({
   //     page: filters.page,

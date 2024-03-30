@@ -6,8 +6,8 @@ const fetchUser = ({ queryKey }) => {
   return request({ url: `/users/${queryKey[1]}` });
 };
 
-const fetchUsers = () => {
-  return request({ url: "/users" });
+const fetchUsers = ({ queryKey }) => {
+  return request({ url: "/users", params: queryKey[1] });
 };
 
 const deleteUser = (id) => {
@@ -45,11 +45,11 @@ export const useDeleteUser = () => {
   });
 };
 
-export const useGetUser = (id) => {
-  console.log("id", id);
+export const useGetUser = (id, enabled = true) => {
   return useQuery({
     queryKey: ["users", id],
     queryFn: fetchUser,
+    enabled: enabled,
   });
 };
 
@@ -60,9 +60,9 @@ export const useGetLogedInUserInfo = () => {
   });
 };
 
-export const useUsersData = () => {
+export const useUsersData = (filter) => {
   return useQuery({
-    queryKey: ["users"],
+    queryKey: ["users", filter],
     queryFn: fetchUsers,
   });
 };

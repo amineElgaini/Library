@@ -23,13 +23,14 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required'],
-            'email' => ['required', 'email'],
+            'username' => ['string', 'required', 'unique:users,username'],
+            'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required'],
         ];
     }
 
-    protected function prepareForValidation() {
-        //$this->merge([]);
+    protected function prepareForValidation()
+    {
+        // $this->merge([]);
     }
 }

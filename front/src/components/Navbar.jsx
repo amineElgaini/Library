@@ -38,13 +38,10 @@ const dashBoardLinks = [
   // },
 ];
 
-// admin: 1,
-// user: 2,
-// manage_users: 3,
+// admin: 4,
 
 function NavBar() {
   const { auth } = useAuth();
-  console.log(auth)
 
   return (
     <>
@@ -53,7 +50,7 @@ function NavBar() {
           <NavigationMenuList>
             <ModeToggle />
 
-            {auth?.roles?.find((role) => [1]?.includes(role)) ? (
+            {auth?.roles?.find((role) => [4]?.includes(role)) ? (
               <NavigationMenuItem>
                 <NavigationMenuTrigger>Dashboard</NavigationMenuTrigger>
                 <NavigationMenuContent>
@@ -82,7 +79,7 @@ function NavBar() {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              {auth?.name !== undefined ? (
+              {auth?.username !== undefined ? (
                 <Link to="/profile" legacyBehavior passHref>
                   <Avatar>
                     <AvatarImage src="https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg" />

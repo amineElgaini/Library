@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { useGetUser } from "@/hooks/useUsers";
 import LoadinLodingSpinner from "@/components/LodingSpinner";
+import { Label } from "@/components/ui/label";
 
 function MoreUserDetails({ user }) {
   const [userId, setUserId] = useState();
@@ -18,7 +19,7 @@ function MoreUserDetails({ user }) {
   return (
     <Dialog>
       <DialogTrigger
-        className="hover:bg-green-500/40 duration-300 transition rounded-full p-2 text-green-500 cursor-pointer"
+        className="hover:bg-green-500/40 duration-300 transition rounded-full p-1 text-green-500 cursor-pointer"
         onClick={() => setUserId(user.id)}
       >
         <PersonIcon width={19} height={19} />
@@ -28,14 +29,28 @@ function MoreUserDetails({ user }) {
           <DialogTitle>User [ {user.id} ] Info:</DialogTitle>
           <DialogDescription className="flex justify-between items-end">
             <div className="text-left">
-              <div>Name: {moreUserInfo?.data?.data.name}</div>
-              <div>Name: {moreUserInfo?.data?.data.email}</div>
               <div>
-                Total Borrowed Books:{" "}
+                <span className="dark:text-white text-black font-bold mr-2">
+                  username:
+                </span>{" "}
+                {moreUserInfo?.data?.data.username}
+              </div>
+              <div>
+                <span className="dark:text-white text-black font-bold mr-2">
+                  Email:
+                </span>{" "}
+                {moreUserInfo?.data?.data.email}
+              </div>
+              <div>
+                <span className="dark:text-white text-black font-bold mr-2">
+                  Total Borrowed Books:{" "}
+                </span>
                 {moreUserInfo?.data?.data.howManyBorrowedBooks}
               </div>
               <div>
-                Total Book Still Borrowed Books:{" "}
+                <span className="dark:text-white text-black font-bold mr-2">
+                  Total Book Still Borrowed Books:
+                </span>
                 {moreUserInfo?.data?.data.howManyStillBorrowedBooks}
               </div>
             </div>

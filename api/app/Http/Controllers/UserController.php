@@ -20,13 +20,9 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        // $this->authorize("viewAny", User::class);
-        // $value = $request->cookie('token');
-        // return $value;
         $filter = new UserFilter();
         $queryItems = $filter->transform($request);
-
-        $users = User::where($queryItems)->paginate()->appends($request->query());
+        $users = User::where($queryItems)->paginate();
         return new UserCollection($users);
     }
 
@@ -35,7 +31,13 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        return new UserResource(User::create($request->all()));
+        $newUser = User::create($request->all());
+        if ($newUser) {
+            return new UserResource($newUser);
+        }
+        return response()->json([
+            'message' => 'User Not Created'
+        ], 400);
     }
 
     /**
@@ -73,20 +75,9 @@ class UserController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to delete user: ' . $e->getMessage()
+                'error' => 'Failed to delete user: '
             ], 400);
         }
-    }
-
-    public function register(Request $request)
-    {
-        $newUser = User::create([
-            "name" => $request->input('name'),
-            "email" => $request->input('email'),
-            "password" => $request->input('password'),
-        ]);
-
-        return $newUser;
     }
 
     public function login(Request $request)
@@ -102,11 +93,7 @@ class UserController extends Controller
         $token = $user->createToken("auth_token")->plainTextToken;
         $roles = $user->permissions()->get()->pluck('id');
 
-        return response()->json(['roles' => $roles, 'name' => $user->name, 'token' => $token]);
-
-        // $response = new Response();
-        // $response->withCookie(cookie('token', $token));
-        // return $response;
+        return response()->json(['roles' => $roles, 'username' => $user->username, 'token' => $token]);
     }
 
     public function getLogedInUserInfo(Request $request)
@@ -114,15 +101,14 @@ class UserController extends Controller
         $user = $request->user();
         $roles = $user->permissions()->get()->pluck('id');
 
-        return response()->json(['roles' => $roles, 'name' => $user->name]);
+        return response()->json(['roles' => $roles, 'username' => $user->username]);
     }
 
     public function logout(Request $request)
     {
         auth()->user()->tokens()->delete();
-        return [
-            'message',
-            'loged out',
-        ];
+        return response()->json([
+            'message' => 'loged out',
+        ], 200);
     }
 }

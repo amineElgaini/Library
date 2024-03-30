@@ -15,7 +15,7 @@ import { Pencil1Icon } from "@radix-ui/react-icons";
 import { useAddUserData } from "@/hooks/useUsers";
 import { Loader2 } from "lucide-react";
 function AddUser() {
-  const [name, setName] = useState("");
+  const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -27,7 +27,7 @@ function AddUser() {
 
   const handleSubmit = () => {
     if (error.password === "") {
-      mutate({ name, email, password });
+      mutate({ username, email, password });
     }
   };
 
@@ -58,13 +58,13 @@ function AddUser() {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
+            <Label htmlFor="username" className="text-right">
+              userName
             </Label>
             <Input
-              id="name"
-              onChange={(e) => setName(e.target.value)}
-              value={name}
+              id="username"
+              onChange={(e) => setUserName(e.target.value)}
+              value={username}
               className="col-span-3"
             />
           </div>

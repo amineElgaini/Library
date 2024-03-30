@@ -25,6 +25,7 @@ class BorrowingRecordController extends Controller
         if ($request->query('includeFine')) {
             return new BorrowingRecordCollection(BorrowingRecord::where($queryItems)->with('fine')->paginate());
         }
+        
         return new BorrowingRecordCollection(BorrowingRecord::where($queryItems)->paginate());
     }
 
@@ -76,9 +77,9 @@ class BorrowingRecordController extends Controller
         //
     }
 
-    public function returnBorrowedBook(Request $request)
+    public function returnBorrowedBook(BorrowingRecord $id)
     {
-        $res = DB::select('CALL returnBook(?)', array($request->borrowId));
+        $res = DB::select('CALL returnBook(?)', array($id->id));
         $res = $res[0];
         if (isset($res->error)) {
             return response()->json([
@@ -93,14 +94,23 @@ class BorrowingRecordController extends Controller
         };
     }
 
-    public function payBorrowedBook(Request $request)
+    public function payBorrowedBook(BorrowingRecord $id)
     {
-        $fine = Fine::where('borrowing_record_id', $request->borrowId)->first();
-
-        if ($fine->payment_status == 1) {
-            return response()->json(["message" => "Fine Already Payed"]);
+        if (!isset($id->actual_return_date)) {
+            return response()->json([
+                'status' => 400,
+                'message' => "Book Not Returned"
+            ], 400);
         }
-        
+
+        $fine = Fine::where('borrowing_record_id', $id->id)->first();
+        if ($fine->payment_status == 1) {
+            return response()->json([
+                'status' => 400,
+                'message' => "Fine Already Payed"
+            ], 400);
+        }
+
         $fine->payment_status = 1;
         $fine->save();
 

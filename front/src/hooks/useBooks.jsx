@@ -7,19 +7,17 @@ const fetchUsers = ({ queryKey }) => {
   return request({ url: "/books", params });
 };
 
-const returnBorrowedBook = (borrowInfo) => {
+const returnBorrowedBook = ({ borrowId }) => {
   return request({
-    url: "/borrowingRecords/returnBorrowedBook",
+    url: `/borrowingRecords/returnBorrowedBook/${borrowId}`,
     method: "post",
-    data: borrowInfo,
   });
 };
 
-const payBorrowedBook = (borrowInfo) => {
+const payBorrowedBook = ({ borrowId }) => {
   return request({
-    url: "/borrowingRecords/payBorrowedBook",
+    url: `/borrowingRecords/payBorrowedBook/${borrowId}`,
     method: "post",
-    data: borrowInfo,
   });
 };
 
@@ -54,7 +52,7 @@ export const useReturnBorrowedBook = () => {
   return useMutation({
     mutationFn: returnBorrowedBook,
     onError: (error) => toast.error(error.message),
-    onSuccess: () => toast.success("User Updated Succefuly"),
+    onSuccess: () => toast.success("Book Returned Succefuly"),
   });
 };
 export const usePayBorrowedBook = () => {

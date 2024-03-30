@@ -9,7 +9,7 @@ function Profile() {
   };
   return (
     <div>
-      <p>Name: {auth.name}</p>
+      <p>Name: {auth.username}</p>
       <Button onClick={logout}>Logout</Button>
     </div>
   );
