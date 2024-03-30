@@ -1,4 +1,4 @@
-import { useBorrowingRecordsData } from "@/hooks/useBooks";
+import { useBorrowingRecordsData } from "@/hooks/useBorrow";
 
 import BorrowingRecrodsTable from "./component/BorrowingRecrodsTable";
 

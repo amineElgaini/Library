@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { useBooksData } from "@/hooks/useBooks";
+import { useBooksData } from "@/hooks/useBook";
 import { useEffect, useState } from "react";
 import BooksTable from "./component/BooksTable";
 

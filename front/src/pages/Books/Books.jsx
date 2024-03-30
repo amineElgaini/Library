@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { useBooksData } from "@/hooks/useBooks";
+import { useBooksData } from "@/hooks/useBook";
 import BookCard from "./components/BookCard";
 import CardLoading from "./components/CardLoading";
 
@@ -17,8 +17,8 @@ function Books() {
   useEffect(() => {
     setFilter({
       page: filters.page,
-      "title[eq]": filters.title,
-      "genre[eq]": filters.genre,
+      "title[like]": filters.title,
+      "genre[like]": filters.genre,
     });
   }, [filters]);
 

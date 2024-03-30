@@ -15,7 +15,7 @@ class CopyResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'copyId'=>$this->copy_id,
+            'copyId'=>$this->id,
             'bookId'=>$this->book_id,
             'availabilityStatus'=>$this->availability_status,
         ];

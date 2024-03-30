@@ -8,8 +8,8 @@ class BookFilter extends ApiFilter
 {
 
     protected $safeParms = [
-        'title' => ['eq'],
-        'genre' => ['eq'],
+        'title' => ['eq', 'like'],
+        'genre' => ['eq', 'like'],
         'publicationDate' => ['eq', 'gt', 'lt'],
     ];
     protected $columnMap = [
@@ -19,6 +19,7 @@ class BookFilter extends ApiFilter
         'eq' => '=',
         'gt' => '>',
         'lt' => '<',
+        'like' => 'like',
     ];
 
 }

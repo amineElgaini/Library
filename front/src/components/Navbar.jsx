@@ -14,6 +14,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import useAuth from "@/hooks/useAuth";
 
 import { Toaster } from "sonner";
+import { useGetLogedInUserInfo } from "@/hooks/useUsers";
+import { useEffect, useState } from "react";
 
 const dashBoardLinks = [
   {
@@ -41,64 +43,84 @@ const dashBoardLinks = [
 // admin: 4,
 
 function NavBar() {
-  const { auth } = useAuth();
+  const [authFinished, setAuthFinished] = useState(false);
+  const { auth, setAuth } = useAuth();
+  const { data, isSuccess, isError, isLoading } = useGetLogedInUserInfo();
+
+  useEffect(() => {
+    if (isSuccess) {
+      setAuth({ roles: data.data.roles, username: data.data.username });
+      setAuthFinished(true);
+      console.log(isError, isSuccess)
+    } else if (isError) {
+      setAuthFinished(true);
+    }
+  }, [isLoading]);
 
   return (
     <>
-      <div className="mt-2 pb-2 border-b-2 border-b-slate-600">
-        <NavigationMenu className="mx-auto">
-          <NavigationMenuList>
-            <ModeToggle />
+      {!authFinished ? (
+        "loading..."
+      ) : (
+        <>
+          <div className="mt-2 pb-2 border-b-2 border-b-slate-600">
+            <NavigationMenu className="mx-auto">
+              <NavigationMenuList>
+                <ModeToggle />
 
-            {auth?.roles?.find((role) => [4]?.includes(role)) ? (
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Dashboard</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[250px] gap-3 p-4 md:w-[400px] md:grid-cols-2 lg:w-[500px] ">
-                    {dashBoardLinks.map((link) => (
-                      <ListItem
-                        key={link.name}
-                        link={link.link}
-                        name={link.name}
-                        desc={link.desc}
-                      />
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            ) : (
-              ""
-            )}
+                {auth?.roles?.find((role) => [4]?.includes(role)) ? (
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger>Dashboard</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="grid w-[250px] gap-3 p-4 md:w-[400px] md:grid-cols-2 lg:w-[500px] ">
+                        {dashBoardLinks.map((link) => (
+                          <ListItem
+                            key={link.name}
+                            link={link.link}
+                            name={link.name}
+                            desc={link.desc}
+                          />
+                        ))}
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                ) : (
+                  ""
+                )}
 
-            <NavigationMenuItem>
-              <Link to="/books" legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  Books
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link to="/books" legacyBehavior passHref>
+                    <NavigationMenuLink
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      Books
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
 
-            <NavigationMenuItem>
-              {auth?.username !== undefined ? (
-                <Link to="/profile" legacyBehavior passHref>
-                  <Avatar>
-                    <AvatarImage src="https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg" />
-                    <AvatarFallback>Profile</AvatarFallback>
-                  </Avatar>
-                </Link>
-              ) : (
-                <Link to="/login" legacyBehavior passHref>
-                  <Button>Login</Button>
-                </Link>
-              )}
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
-      </div>
-      <div className="my-20">
-        <Outlet />
-        <Toaster richColors />
-      </div>
+                <NavigationMenuItem>
+                  {auth?.username !== undefined ? (
+                    <Link to="/profile" legacyBehavior passHref>
+                      <Avatar>
+                        <AvatarImage src="https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg" />
+                        <AvatarFallback>Profile</AvatarFallback>
+                      </Avatar>
+                    </Link>
+                  ) : (
+                    <Link to="/login" legacyBehavior passHref>
+                      <Button>Login</Button>
+                    </Link>
+                  )}
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
+          <div className="my-20">
+            <Outlet />
+            <Toaster richColors />
+          </div>
+        </>
+      )}
     </>
   );
 }

@@ -57,6 +57,7 @@ export const useGetLogedInUserInfo = () => {
   return useQuery({
     queryKey: ["getLogedInUserInfo"],
     queryFn: getLogedInUserInfo,
+    retry: false
   });
 };
 

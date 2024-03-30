@@ -20,13 +20,12 @@ class BookController extends Controller
 
     public function index(Request $request)
     {
-
         $filter = new BookFilter();
         $queryItems = $filter->transform($request);
 
         return DB::table('books')
-            ->join('copies', 'books.id', '=', 'copies.book_id')
-            ->select("book_id as bookId", "title", "additional_details as additionalDetails", "isbn", "genre", "number_of_copies as numberOfCopies", DB::raw("cast(sum(availability_status) as int) as availableCopies"))
+            ->leftJoin('copies', 'books.id', '=', 'copies.book_id')
+            ->select("books.id as bookId", "title", "additional_details as additionalDetails", "isbn", "genre", "number_of_copies as numberOfCopies", DB::raw("CAST(COALESCE(SUM(availability_status), 0) AS INT) as availableCopies"))
             ->groupBy('books.id')
             ->where($queryItems)
             ->paginate();
@@ -37,8 +36,12 @@ class BookController extends Controller
      */
     public function store(StoreBookRequest $request)
     {
-
-        return new BookResource(Book::create($request->all()));
+        if (Book::where("isbn", "=", $request->ISBN)->get()->isEmpty()) {
+            return new BookResource(Book::create($request->all()));
+        }
+        return response()->json([
+            'message' => 'ISBN already exist',
+        ], 400);
     }
 
     /**

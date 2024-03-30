@@ -26,7 +26,7 @@ class UpdateBookRequest extends FormRequest
         if ($method == 'PUT') {
             return [
                 "title" => ['required', 'string'],
-                "ISBN" => ['required', 'string'],
+                "ISBN" => ['required', 'string', 'unique:books,isbn'],
                 "genre" => ['required', 'string'],
                 "publicationDate" => ['required', 'date'],
                 "additionalDetails" => ['required', 'string']
@@ -34,7 +34,7 @@ class UpdateBookRequest extends FormRequest
         } else {
             return [
                 "title" => ['sometimes', 'required', 'string'],
-                "ISBN" => ['sometimes', 'required', 'string'],
+                "ISBN" => ['sometimes', 'required', 'string', 'unique:books,isbn'],
                 "genre" => ['sometimes', 'required', 'string'],
                 "publicationDate" => ['sometimes', 'required', 'date'],
                 "additionalDetails" => ['sometimes', 'required', 'string']

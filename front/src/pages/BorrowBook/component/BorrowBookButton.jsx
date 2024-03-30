@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useGetUser } from "@/hooks/useUsers";
-import { useBorrowBook } from "@/hooks/useBooks";
+import { useBorrowBook } from "@/hooks/useBorrow";
 
 function BorrowBookButton({ bookId }) {
   const [userId, setUserId] = useState(-1);

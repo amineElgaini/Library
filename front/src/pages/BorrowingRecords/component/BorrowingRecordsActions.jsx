@@ -1,4 +1,4 @@
-import { usePayBorrowedBook, useReturnBorrowedBook } from "@/hooks/useBooks";
+import { usePayBorrowedBook, useReturnBorrowedBook } from "@/hooks/useBorrow";
 import {
   AlertDialog,
   AlertDialogAction,
