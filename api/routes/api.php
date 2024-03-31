@@ -25,7 +25,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // users
-Route::apiResource('users', UserController::class)->middleware(['auth:sanctum', 'can:admin']);
+Route::group(['middleware' => ['auth:sanctum', 'can:admin']], function () {
+    Route::apiResource('users', UserController::class);
+    Route::get('users/findByUsername/{username:username}', [UserController::class, 'findByUsername']);
+
+});
 
 // books
 Route::apiResource('books', BookController::class)->middleware(['auth:sanctum', 'can:admin'])->except(['index', 'show']);

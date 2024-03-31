@@ -49,6 +49,12 @@ class UserController extends Controller
         return new UserResource(DB::select("SELECT * FROM vw_more_user_info where id = $user->id or username = $user->username")[0]);
     }
 
+
+    public function findByUsername(User $username)
+    {
+        return new UserResource($username);
+    }
+
     /**
      * Update the specified resource in storage.
      */

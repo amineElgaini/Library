@@ -17,14 +17,12 @@ import LoadinLodingSpinner from "@/components/LodingSpinner";
 
 function BorrowBookButton({ bookId }) {
   const [username, setUsername] = useState("");
-  const { data: user, isLoading } = useGetUserByName({
-    "username[eq]": username,
-  });
-
+  const { data: user, isLoading } = useGetUserByName(username);
+console.log(user?.data?.data?.id)
   const { mutate } = useBorrowBook();
   const handleBorrow = () => {
     mutate({
-      userId: user?.data?.data[0]?.id,
+      userId: user?.data?.data?.id,
       bookId: bookId,
       borrowingDays: 3,
     });
@@ -49,11 +47,11 @@ function BorrowBookButton({ bookId }) {
               />
               <DialogClose
                 className=""
-                disabled={user?.data?.data[0]?.id === undefined}
+                disabled={user?.data?.data?.id === undefined}
               >
                 <Button
                   variant="green"
-                  disabled={user?.data?.data[0]?.id === undefined}
+                  disabled={user?.data?.data?.id === undefined}
                   onClick={() => {
                     handleBorrow();
                   }}
@@ -69,19 +67,19 @@ function BorrowBookButton({ bookId }) {
                   <span className="dark:text-white text-black font-bold mr-2">
                     UserId:
                   </span>{" "}
-                  {user?.data?.data[0]?.id}
+                  {user?.data?.data?.id}
                 </p>
                 <p>
                   <span className="dark:text-white text-black font-bold mr-2">
                     UserEmail:
                   </span>{" "}
-                  {user?.data?.data[0]?.email}
+                  {user?.data?.data?.email}
                 </p>
                 <p>
                   <span className="dark:text-white text-black font-bold mr-2">
                     UserName:
                   </span>{" "}
-                  {user?.data?.data[0]?.username}
+                  {user?.data?.data?.username}
                 </p>
               </div>
               <LoadinLodingSpinner isLoading={isLoading} />

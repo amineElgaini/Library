@@ -22,8 +22,8 @@ class ApiFilter
 
             $column = $this->columnMap[$parm] ?? $parm;
             foreach ($operators as $operator) {
-                // if (isset($query[$operator])) { // old code
-                if (array_key_exists($operator, $query)) {
+                // if (array_key_exists($operator, $query)) {
+                if (isset($query[$operator])) {
                     if ($this->operatorMap[$operator] === "like") {
                         $eloQuery[] = [$column, $this->operatorMap[$operator], "%" . $query[$operator] . "%"];
                     } else {

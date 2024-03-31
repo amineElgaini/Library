@@ -2,6 +2,10 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { request } from "@/utils/axios-utils";
 import { toast } from "sonner";
 
+const findByUsername = ({ queryKey }) => {
+  return request({ url: `/users/findByUsername/${queryKey[1]}` });
+};
+
 const fetchUser = ({ queryKey }) => {
   return request({ url: `/users/${queryKey[1]}` });
 };
@@ -67,11 +71,10 @@ export const useUsersData = (filter) => {
   });
 };
 
-export const useGetUserByName = (filter) => {
-
+export const useGetUserByName = (username) => {
   return useQuery({
-    queryKey: ["users/username", filter],
-    queryFn: fetchUsers,
+    queryKey: ["users/findByUsername", username],
+    queryFn: findByUsername,
   });
 };
 
