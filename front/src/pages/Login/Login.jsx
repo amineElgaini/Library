@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useState } from "react";
 import useAuth from "@/hooks/useAuth";
-import { useNavigate, useLocation, Navigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Login() {
   const { auth, setAuth } = useAuth();

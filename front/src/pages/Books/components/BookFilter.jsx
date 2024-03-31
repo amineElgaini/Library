@@ -1,11 +1,5 @@
 import { Input } from "@/components/ui/input";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import Pagination from "@/components/Pagination";
 import { useEffect, useState } from "react";
 
 function BookFilter({ setFilter, pagination }) {
@@ -14,6 +8,7 @@ function BookFilter({ setFilter, pagination }) {
     genre: "",
     page: 1,
   });
+
   useEffect(() => {
     setFilter({
       page: filters.page,
@@ -21,10 +16,11 @@ function BookFilter({ setFilter, pagination }) {
       "genre[like]": filters.genre,
     });
   }, [filters]);
+
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-2 mb-4 items-center flex-wrap">
       <Input
-        className="w-[200px]"
+        className="w-[150px]"
         name="genre"
         value={filters.genre}
         onChange={(e) =>
@@ -33,10 +29,10 @@ function BookFilter({ setFilter, pagination }) {
           })
         }
         placeholder="genre"
-      ></Input>
+      />
 
       <Input
-        className="w-[200px]"
+        className="w-[150px]"
         name="title"
         value={filters.title}
         onChange={(e) =>
@@ -45,34 +41,9 @@ function BookFilter({ setFilter, pagination }) {
           })
         }
         placeholder="title"
-      ></Input>
+      />
 
-      <Pagination className={"ms-auto"}>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={() => {
-                if (pagination?.current_page !== 1) {
-                  setFilters((p) => {
-                    return { ...p, page: pagination?.current_page - 1 };
-                  });
-                }
-              }}
-            />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext
-              onClick={() => {
-                if (pagination?.current_page !== pagination?.last_page) {
-                  setFilters((p) => {
-                    return { ...p, page: pagination?.current_page + 1 };
-                  });
-                }
-              }}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      <Pagination setFilters={setFilters} pagination={pagination} />
     </div>
   );
 }

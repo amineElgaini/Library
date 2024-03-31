@@ -19,14 +19,50 @@ class BorrowingRecordController extends Controller
      */
     public function index(Request $request)
     {
+        // if ($request->query('includeFine')) {
+        //     return new BorrowingRecordCollection(BorrowingRecord::with('fine')->where($queryItems)->paginate());
+        // }
+        // return new BorrowingRecordCollection(BorrowingRecord::where($queryItems)->paginate());
+
         $filter = new BorrowingRecordFilter();
         $queryItems = $filter->transform($request);
 
-        if ($request->query('includeFine')) {
-            return new BorrowingRecordCollection(BorrowingRecord::where($queryItems)->with('fine')->paginate());
-        }
-        
-        return new BorrowingRecordCollection(BorrowingRecord::where($queryItems)->paginate());
+        $query = DB::table('borrowing_records')
+            ->leftJoin('fines', 'borrowing_records.id', '=', 'fines.borrowing_record_id')
+            ->select(
+                "borrowing_records.id",
+                "borrowing_records.user_id as userId",
+                "borrowing_records.copy_id as copyId",
+                "borrowing_date as borrowingDate",
+                "due_date as dueDate",
+                "actual_return_date as actualReturnDate",
+                "number_of_late_days as numberOfLateDays",
+                "fine_amount as fineAmount",
+                "payment_status as paymentStatus"
+            );
+
+        $query->where($queryItems)->where(function ($query) use ($request) {
+            if ($request->query('notPaid')) {
+                $query->where('payment_status', 0)
+                    ->whereNotNull('actual_return_date');
+            }
+
+            if ($request->query('borrow')) {
+                $query->orWhere(function ($query) {
+                    $query->whereNull('actual_return_date')
+                        ->where('due_date', '>', now());
+                });
+            }
+
+            if ($request->query('late')) {
+                $query->orWhere(function ($query) {
+                    $query->where('due_date', '<', now())
+                        ->whereNull('actual_return_date');
+                });
+            }
+        });
+
+        return $query->paginate();
     }
 
 

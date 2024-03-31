@@ -2,11 +2,6 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { request } from "@/utils/axios-utils";
 import { toast } from "sonner";
 
-// const fetchUsers = ({ queryKey }) => {
-//   const params = queryKey[1];
-//   return request({ url: "/books", params });
-// };
-
 const returnBorrowedBook = ({ borrowId }) => {
   return request({
     url: `/borrowingRecords/returnBorrowedBook/${borrowId}`,
@@ -40,13 +35,6 @@ export const useBorrowingRecordsData = (filters) => {
     queryFn: borrowingRecordsData,
   });
 };
-
-// export const useBooksData = (filters) => {
-//   return useQuery({
-//     queryKey: ["books", filters],
-//     queryFn: fetchUsers,
-//   });
-// };
 
 export const useReturnBorrowedBook = () => {
   return useMutation({

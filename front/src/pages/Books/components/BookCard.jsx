@@ -44,7 +44,7 @@ function BookCard({ book }) {
             </div>
           </Link>
         </TooltipTrigger>
-        <TooltipContent className="w-[200px] bg-blue-700">
+        <TooltipContent className="w-[200px] bg-blue-600">
           <p>{book.additionalDetails}</p>
         </TooltipContent>
       </Tooltip>

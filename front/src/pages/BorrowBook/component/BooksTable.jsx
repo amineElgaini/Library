@@ -11,7 +11,7 @@ import BorrowBookButton from "./BorrowBookButton";
 
 function BooksTable({ books }) {
   return (
-    <Table className="mx-auto">
+    <Table>
       <TableCaption>Table Of Users</TableCaption>
       <TableHeader>
         <TableRow>

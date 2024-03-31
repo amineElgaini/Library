@@ -23,7 +23,6 @@ const RequireAuth = ({ allowedRoles = [] }) => {
     return <Navigate to="/unauthorized" state={{ from: location }} replace />;
   }
   // // you are not authentificated
-  console.log(auth)
   return <Navigate to="/login" state={{ from: location }} replace />;
 };
 

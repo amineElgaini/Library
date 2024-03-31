@@ -14,8 +14,9 @@ import { Badge } from "@/components/ui/badge";
 import BorrowingRecordStatus from "./BorrowingRecordStatus";
 
 function BorrowingRecrodsTable({ borrowingRecords }) {
+  console.log(borrowingRecords);
   return (
-    <Table className="mx-auto">
+    <Table>
       <TableCaption>Table Of Borrowing Records</TableCaption>
       <TableHeader>
         <TableRow>
@@ -24,9 +25,6 @@ function BorrowingRecrodsTable({ borrowingRecords }) {
           <TableHead>CopyId</TableHead>
           <TableHead>borrowingDate</TableHead>
           <TableHead>dueDate</TableHead>
-          {/* <TableHead>actualReturnDate</TableHead>
-          <TableHead>fineAmount</TableHead>
-          <TableHead>paymentStatus</TableHead> */}
           <TableHead>Status</TableHead>
           <TableHead>Action</TableHead>
         </TableRow>
@@ -42,15 +40,9 @@ function BorrowingRecrodsTable({ borrowingRecords }) {
                 {format(borrowingRecord.borrowingDate, "M-d-y")}
               </TableCell>
               <TableCell>{format(borrowingRecord.dueDate, "M-d-y")}</TableCell>
-
               <TableCell>
                 <BorrowingRecordStatus borrowingRecord={borrowingRecord} />
               </TableCell>
-              {/* <TableCell>{borrowingRecord.actualReturnDate}</TableCell>
-              <TableCell>{borrowingRecord?.fine?.fineAmount}</TableCell>
-              <TableCell>
-                {borrowingRecord?.fine?.paymentStatus ? "Yes" : "No"}
-              </TableCell> */}
               <TableCell className="flex gap-3">
                 <BorrowingRecordsActions borrowingRecord={borrowingRecord} />
               </TableCell>

@@ -1,29 +1,40 @@
 import { Badge } from "@/components/ui/badge";
-import { useEffect, useState } from "react";
 
 function BorrowingRecordStatus({ borrowingRecord }) {
-  const [passedTheTime, setPassedTheTime] = useState(false);
-  const [isPaid, setIsPaid] = useState(false);
+  const paid = borrowingRecord.paymentStatus === 1;
 
-  useEffect(() => {
-    if (
-      Date.now() - Date.parse(borrowingRecord.dueDate) > 0 &&
-      borrowingRecord.actualReturnDate === null
-    ) {
-      setPassedTheTime(true);
-    }
-    setIsPaid(borrowingRecord?.fine?.paymentStatus === 1);
-  }, []);
+  let notPaid = borrowingRecord.actualReturnDate !== null && !paid;
+
+  const late =
+    Date.now() - Date.parse(borrowingRecord.dueDate) > 0 &&
+    borrowingRecord.actualReturnDate === null;
+
+  const borrow = !late && borrowingRecord.actualReturnDate === null && !paid;
+
   return (
     <>
-      {passedTheTime ? (
-        <Badge className={"whitespace-nowrap"} variant="warnning">
-          Not Returned
+      {borrow ? <Badge className={"whitespace-nowrap"}>borrow</Badge> : ""}
+      {paid ? (
+        <Badge className={"whitespace-nowrap"} variant="success">
+          Paid
         </Badge>
       ) : (
         ""
       )}
-      {isPaid ? <Badge variant="primary">Paid</Badge> : ""}
+      {late ? (
+        <Badge className={"whitespace-nowrap"} variant="warnning">
+          Late
+        </Badge>
+      ) : (
+        ""
+      )}
+      {notPaid ? (
+        <Badge className={"whitespace-nowrap"} variant="primary">
+          Not Paid
+        </Badge>
+      ) : (
+        ""
+      )}
     </>
   );
 }

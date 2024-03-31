@@ -117,7 +117,7 @@ function NavBar() {
               </NavigationMenuList>
             </NavigationMenu>
           </div>
-          <div className="my-20">
+          <div className="my-20 container">
             <Outlet />
             <Toaster richColors />
           </div>

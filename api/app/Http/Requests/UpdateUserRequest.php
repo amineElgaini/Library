@@ -37,12 +37,4 @@ class UpdateUserRequest extends FormRequest
             ];
         }
     }
-
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            "publication_date" => $this->publicationDate,
-            "additional_details" => $this->additionalDetails
-        ]);
-    }
 }
