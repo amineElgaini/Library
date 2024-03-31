@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import { useGetUser } from "@/hooks/useUsers";
 import LoadinLodingSpinner from "@/components/LodingSpinner";
-import { Label } from "@/components/ui/label";
 
 function MoreUserDetails({ user }) {
   const [userId, setUserId] = useState();

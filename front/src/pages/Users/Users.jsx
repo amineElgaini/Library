@@ -6,7 +6,10 @@ import UsersTable from "./component/UsersTable";
 import UsersFilter from "./component/UsersFilter";
 
 function Users() {
-  const [filter, setFilter] = useState({});
+  const [filter, setFilter] = useState({
+    page: 1,
+    "username[like]": "",
+  });
   const { data } = useUsersData(filter);
 
   return (

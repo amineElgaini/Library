@@ -45,11 +45,10 @@ export const useDeleteUser = () => {
   });
 };
 
-export const useGetUser = (id, enabled = true) => {
+export const useGetUser = (id) => {
   return useQuery({
     queryKey: ["users", id],
     queryFn: fetchUser,
-    enabled: enabled,
   });
 };
 
@@ -57,13 +56,21 @@ export const useGetLogedInUserInfo = () => {
   return useQuery({
     queryKey: ["getLogedInUserInfo"],
     queryFn: getLogedInUserInfo,
-    retry: false
+    retry: false,
   });
 };
 
 export const useUsersData = (filter) => {
   return useQuery({
     queryKey: ["users", filter],
+    queryFn: fetchUsers,
+  });
+};
+
+export const useGetUserByName = (filter) => {
+
+  return useQuery({
+    queryKey: ["users/username", filter],
     queryFn: fetchUsers,
   });
 };

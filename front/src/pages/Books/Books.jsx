@@ -5,7 +5,11 @@ import CardLoading from "./components/CardLoading";
 import BookFilter from "./components/BookFilter";
 
 function Books() {
-  const [filter, setFilter] = useState({});
+  const [filter, setFilter] = useState({
+    page: 1,
+    "title[like]": "",
+    "genre[like]": "",
+  });
   const { data, isLoading, isError } = useBooksData(filter);
 
   return (

@@ -22,6 +22,7 @@ class UserController extends Controller
     {
         $filter = new UserFilter();
         $queryItems = $filter->transform($request);
+        // return $queryItems; // degub
         $users = User::where($queryItems)->paginate();
         return new UserCollection($users);
     }
@@ -45,7 +46,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return new UserResource(DB::select("SELECT * FROM vw_more_user_info where id = $user->id")[0]);
+        return new UserResource(DB::select("SELECT * FROM vw_more_user_info where id = $user->id or username = $user->username")[0]);
     }
 
     /**

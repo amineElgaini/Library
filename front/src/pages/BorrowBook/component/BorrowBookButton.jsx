@@ -11,17 +11,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { useGetUser } from "@/hooks/useUsers";
+import { useGetUserByName } from "@/hooks/useUsers";
 import { useBorrowBook } from "@/hooks/useBorrow";
+import LoadinLodingSpinner from "@/components/LodingSpinner";
 
 function BorrowBookButton({ bookId }) {
-  const [userId, setUserId] = useState(-1);
-  const { data: user, refetch } = useGetUser(userId, false);
+  const [username, setUsername] = useState("");
+  const { data: user, isLoading } = useGetUserByName({
+    "username[eq]": username,
+  });
 
   const { mutate } = useBorrowBook();
   const handleBorrow = () => {
     mutate({
-      userId: userId,
+      userId: user?.data?.data[0]?.id,
       bookId: bookId,
       borrowingDays: 3,
     });
@@ -37,23 +40,20 @@ function BorrowBookButton({ bookId }) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Select a User To Borrow Book [ {bookId} ]</DialogTitle>
-          <DialogDescription className="flex flex-col ">
-            <div className="mt-4 flex w-full max-w-sm items-center space-x-2">
+          <DialogDescription className="flex flex-col">
+            <div className="mt-4 flex justify-center w-full max-w-sm items-center space-x-2">
               <Input
-                onChange={(e) => setUserId(e.target.value)}
-                type="number"
-                placeholder="User"
+                onChange={(e) => setUsername(e.target.value)}
+                type="text"
+                placeholder="Usernae"
               />
-              <Button size={"sm"} onClick={() => refetch()}>
-                Find
-              </Button>
               <DialogClose
                 className=""
-                disabled={user?.data?.data.id === undefined}
+                disabled={user?.data?.data[0]?.id === undefined}
               >
                 <Button
                   variant="green"
-                  disabled={user?.data?.data.id === undefined}
+                  disabled={user?.data?.data[0]?.id === undefined}
                   onClick={() => {
                     handleBorrow();
                   }}
@@ -63,10 +63,28 @@ function BorrowBookButton({ bookId }) {
                 </Button>
               </DialogClose>
             </div>
-            <div className="mt-2">
-              <p>UserId: {user?.data?.data.id}</p>
-              <p>UserEmail: {user?.data?.data.email}</p>
-              <p>UserName: {user?.data?.data.username}</p>
+            <div className="flex justify-between items-end">
+              <div className="mt-2 text-left text-base">
+                <p>
+                  <span className="dark:text-white text-black font-bold mr-2">
+                    UserId:
+                  </span>{" "}
+                  {user?.data?.data[0]?.id}
+                </p>
+                <p>
+                  <span className="dark:text-white text-black font-bold mr-2">
+                    UserEmail:
+                  </span>{" "}
+                  {user?.data?.data[0]?.email}
+                </p>
+                <p>
+                  <span className="dark:text-white text-black font-bold mr-2">
+                    UserName:
+                  </span>{" "}
+                  {user?.data?.data[0]?.username}
+                </p>
+              </div>
+              <LoadinLodingSpinner isLoading={isLoading} />
             </div>
           </DialogDescription>
         </DialogHeader>

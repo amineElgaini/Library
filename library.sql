@@ -7,6 +7,10 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_books_info` AS select `copies`.`book_id` AS `bookId`,`books`.`title` AS `title`,`books`.`ISBN` AS `isbn`,`books`.`genre` AS `genre`,`books`.`number_of_copies` AS `numberOfCopies`,cast(sum(`copies`.`availability_status`) as signed) AS `availableBooks` from (`books` join `copies` on(`books`.`id` = `copies`.`book_id`)) group by `books`.`id`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_more_user_info` AS select `users`.`id` AS `id`,`users`.`username` AS `username`,`users`.`email` AS `email`,`HowManyBorrowedBooks`(`users`.`id`) AS `how_many_borrowed_books`,`HowManyStillBorrowedBooks`(`users`.`id`) AS `how_many_still_borrowed_books` from `users`;
+
 CREATE DEFINER=`root`@`localhost` FUNCTION `anAvailableCopy`(book_id_value int) RETURNS int(11)
 BEGIN
 	
@@ -15,24 +19,26 @@ END;
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `borrow`(IN user_id_value int, IN book_id_value int, IN borrowing_days_value int)
 BEGIN
-
   	DECLARE copy_id_value int;
+  	DECLARE error_message VARCHAR(255) DEFAULT 'an error occured';
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
   	BEGIN
     	ROLLBACK;
-    	SELECT 'An error occurred';
+    	SELECT error_message as error;
   	END;
   	
 	START TRANSACTION;
 	
 	IF (!userExist(user_id_value)) THEN
-		SELECT 'User Is Not Found';
+		SET error_message = 'User Is Not Found';
+		SIGNAL SQLSTATE '45000';
 	END IF;
 	
 	set copy_id_value = anAvailableCopy(book_id_value);
 	
 	IF (ISNULL(copy_id_value)) THEN
-		SELECT 'copy Is Not Found';
+		SET error_message = 'copy Is Not Found';
+		SIGNAL SQLSTATE '45000';
 	END IF;
 	
 	
@@ -42,8 +48,19 @@ BEGIN
 	values(user_id_value, copy_id_value, now(), DATE_ADD(now(), INTERVAL borrowing_days_value DAY));
 	
 	commit;
-	select 'success';
+	select 'success' as success;
+END;
 
+CREATE DEFINER=`root`@`localhost` FUNCTION `HowManyBorrowedBooks`(user_id_value int) RETURNS int(11)
+BEGIN
+	
+	return (select count(*) from borrowing_records where user_id = user_id_value);
+END;
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `HowManyStillBorrowedBooks`(user_id_value int) RETURNS int(11)
+BEGIN
+	
+	return (select count(*) from borrowing_records where user_id = user_id_value and actual_return_date IS NULL);
 END;
 
 CREATE DEFINER=`root`@`localhost` FUNCTION `isBorrowedBookIsNotReturned`(borrowing_record_id_value int) RETURNS tinyint(1)
@@ -60,11 +77,11 @@ BEGIN
 
 	DECLARE user_id_value, copy_id_value, number_of_late_days_value , fine_amount_value INT;
     DECLARE actual_retrun_date_value, return_date_value DATE;
-    
+    DECLARE error_message VARCHAR(255) DEFAULT 'an error occured';
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
   	BEGIN
     	ROLLBACK;
-    	SELECT 'An error occurred';
+    	SELECT error_message as error;
   	END;
   	START TRANSACTION;
 
@@ -72,10 +89,10 @@ BEGIN
 	
 	IF (isBorrowedBookIsNotReturned(borrowing_record_id_value)) THEN
 
-        UPDATE borrowing_records SET actual_return_date = return_date_value;
+        UPDATE borrowing_records SET actual_return_date = return_date_value where id = borrowing_record_id_value;
 
         SELECT
-        	user_id, copy_id, DATEDIFF(actual_return_date, due_date), DATEDIFF(actual_return_date, borrowing_date) * (SELECT default_fine_per_day FROM settings_table)
+        	user_id, copy_id, DATEDIFF(actual_return_date, due_date), (DATEDIFF(actual_return_date, borrowing_date) + 1) * (SELECT default_fine_per_day FROM settings_table)
         into
         	user_id_value, copy_id_value, number_of_late_days_value, fine_amount_value
         FROM
@@ -90,8 +107,8 @@ BEGIN
         COMMIT;
         select 'success';
     ELSE
-
-    	select 'book already returned';
+    	SET error_message = 'book already returned';
+		SIGNAL SQLSTATE '45000';
 	END IF;
 END;
 
@@ -102,6 +119,10 @@ BEGIN
 		
 	return res;
 END;
+
+
+
+
 
 
 
