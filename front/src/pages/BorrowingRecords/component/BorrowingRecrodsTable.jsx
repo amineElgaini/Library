@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -10,18 +9,16 @@ import {
 } from "@/components/ui/table";
 import BorrowingRecordsActions from "./BorrowingRecordsActions";
 import { format } from "date-fns";
-import { Badge } from "@/components/ui/badge";
 import BorrowingRecordStatus from "./BorrowingRecordStatus";
 
 function BorrowingRecrodsTable({ borrowingRecords }) {
-  console.log(borrowingRecords);
   return (
     <Table>
       <TableCaption>Table Of Borrowing Records</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>ID</TableHead>
-          <TableHead>UserId</TableHead>
+          <TableHead>User</TableHead>
           <TableHead>CopyId</TableHead>
           <TableHead>borrowingDate</TableHead>
           <TableHead>dueDate</TableHead>
@@ -34,7 +31,12 @@ function BorrowingRecrodsTable({ borrowingRecords }) {
           return (
             <TableRow key={borrowingRecord.id}>
               <TableCell>{borrowingRecord.id}</TableCell>
-              <TableCell>{borrowingRecord.userId}</TableCell>
+              <TableCell className="whitespace-nowrap">
+                <span className="text-blue-400">
+                  [{borrowingRecord.userId}]{" "}
+                </span>
+                {borrowingRecord.username}
+              </TableCell>
               <TableCell>{borrowingRecord.copyId}</TableCell>
               <TableCell>
                 {format(borrowingRecord.borrowingDate, "M-d-y")}

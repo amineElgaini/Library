@@ -10,13 +10,14 @@ function Users() {
     page: 1,
     "username[like]": "",
   });
-  const { data } = useUsersData(filter);
+
+  const { data, isLoading } = useUsersData(filter);
 
   return (
     <div className="container">
       <AddUser />
       <UsersFilter setFilter={setFilter} pagination={data?.data?.meta} />
-      <UsersTable users={data?.data?.data} />
+      {isLoading ? "loading..." : <UsersTable users={data?.data?.data} />}
     </div>
   );
 }

@@ -18,7 +18,6 @@ import LoadinLodingSpinner from "@/components/LodingSpinner";
 function BorrowBookButton({ bookId }) {
   const [username, setUsername] = useState("");
   const { data: user, isLoading } = useGetUserByName(username);
-console.log(user?.data?.data?.id)
   const { mutate } = useBorrowBook();
   const handleBorrow = () => {
     mutate({

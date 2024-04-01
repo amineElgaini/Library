@@ -91,7 +91,7 @@ function NavBar() {
                 )}
 
                 <NavigationMenuItem>
-                  <Link to="/books" legacyBehavior passHref>
+                  <Link to="/books">
                     <NavigationMenuLink
                       className={navigationMenuTriggerStyle()}
                     >
@@ -102,14 +102,14 @@ function NavBar() {
 
                 <NavigationMenuItem>
                   {auth?.username !== undefined ? (
-                    <Link to="/profile" legacyBehavior passHref>
+                    <Link to="/profile">
                       <Avatar>
                         <AvatarImage src="https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg" />
                         <AvatarFallback>Profile</AvatarFallback>
                       </Avatar>
                     </Link>
                   ) : (
-                    <Link to="/login" legacyBehavior passHref>
+                    <Link to="/login">
                       <Button>Login</Button>
                     </Link>
                   )}

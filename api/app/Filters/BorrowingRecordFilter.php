@@ -10,6 +10,7 @@ class BorrowingRecordFilter extends ApiFilter
     protected $safeParms = [
         'copyId' => ['eq'],
         'userId' => ['eq'],
+        'username' => ['eq', 'like'],
         'borrowingDate' => ['eq', 'gt', 'lt'],
         'dueDate' => ['eq', 'gt', 'lt'],
         'actualReturnDate' => ['eq', 'gt', 'lt'],
@@ -28,5 +29,6 @@ class BorrowingRecordFilter extends ApiFilter
         'neq' => '!=',
         'gt' => '>',
         'lt' => '<',
+        'like' => 'like',
     ];
 }

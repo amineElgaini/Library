@@ -14,7 +14,10 @@ function BorrowingRecordsActions({ borrowingRecord }) {
         color="blue"
       />
       <ActionButton
-        disable={borrowingRecord.actualReturnDate === null || borrowingRecord.paymentStatus === 1}
+        disable={
+          borrowingRecord.actualReturnDate === null ||
+          borrowingRecord.paymentStatus === 1
+        }
         actionName={"Pay"}
         actionDescription={"You Will Pay The Book Fee To The Library"}
         action={() => payBook({ borrowId: borrowingRecord.id })}

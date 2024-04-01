@@ -28,9 +28,11 @@ class BorrowingRecordController extends Controller
         $queryItems = $filter->transform($request);
 
         $query = DB::table('borrowing_records')
+            ->join('users', 'users.id', '=', 'borrowing_records.user_id')
             ->leftJoin('fines', 'borrowing_records.id', '=', 'fines.borrowing_record_id')
             ->select(
                 "borrowing_records.id",
+                "users.username",
                 "borrowing_records.user_id as userId",
                 "borrowing_records.copy_id as copyId",
                 "borrowing_date as borrowingDate",
@@ -40,29 +42,34 @@ class BorrowingRecordController extends Controller
                 "fine_amount as fineAmount",
                 "payment_status as paymentStatus"
             );
-
         $query->where($queryItems)->where(function ($query) use ($request) {
-            if ($request->query('notPaid')) {
+            if ($request->query('notPaid') === "true") {
                 $query->where('payment_status', 0)
                     ->whereNotNull('actual_return_date');
             }
 
-            if ($request->query('borrow')) {
+            if ($request->query('borrow') === "true") {
                 $query->orWhere(function ($query) {
                     $query->whereNull('actual_return_date')
                         ->where('due_date', '>', now());
                 });
             }
 
-            if ($request->query('late')) {
+            if ($request->query('late') === "true") {
                 $query->orWhere(function ($query) {
                     $query->where('due_date', '<', now())
                         ->whereNull('actual_return_date');
                 });
             }
+
+            if ($request->query('paid') === "true") {
+                $query->orWhere(function ($query) {
+                    $query->where('payment_status', 1);
+                });
+            }
         });
 
-        return $query->paginate();
+        return $query->paginate(10);
     }
 
 
