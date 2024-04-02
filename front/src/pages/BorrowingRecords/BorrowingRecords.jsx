@@ -8,6 +8,10 @@ function BorrowingRecords() {
   const [filter, setFilter] = useState({
     page: 1,
     includeFine: true,
+    "borrowingDate[gte]": "",
+    "borrowingDate[lte]": "",
+    "dueDate[gte]": "",
+    "dueDate[lte]": "",
     "username[eq]": "",
     notPaid: false,
     borrow: false,

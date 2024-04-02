@@ -8,12 +8,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import DateFilter from "./DateFilter";
 function BorrowingRecordsFilter({ filter, setFilter, pagination }) {
   return (
-    <div className="flex justify-between gap-2 mb-4 items-center flex-wrap">
-      <div className="flex gap-2">
+    <div className="flex justify-between gap-2 mb-4 items-end flex-wrap">
+      <DateFilter setFilter={setFilter} />
+
+      <div className="flex gap-2 flex-wrap">
         <Input
           placeholder="username"
+          className="w-[150px]"
           value={filter["username[eq]"]}
           onChange={(e) => {
             setFilter((p) => {
