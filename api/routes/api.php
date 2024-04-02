@@ -5,6 +5,7 @@ use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\BorrowingRecordController;
 use App\Http\Controllers\CookieController;
 use App\Http\Controllers\CopyController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['auth:sanctum', 'can:admin']], function () {
     Route::apiResource('users', UserController::class);
     Route::get('users/findByUsername/{username:username}', [UserController::class, 'findByUsername']);
+});
+
+// profile
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('/profile/allBorrowedBooks', 'allBorrowedBooks');
+        Route::get('/profile/lateBooks', 'lateBooks');
+        Route::get('/profile/borrowedBooks', 'borrowedBooks');
+        Route::get('/profile/paidBooks', 'paidBooks');
+        Route::get('/profile/notPaidBooks', 'notPaidBooks');
+    });
 });
 
 // books

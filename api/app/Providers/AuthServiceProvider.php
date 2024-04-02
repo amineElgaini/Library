@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Book;
 use App\Models\User;
+use App\Policies\BookPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 

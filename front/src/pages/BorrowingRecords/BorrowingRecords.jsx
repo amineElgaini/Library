@@ -14,7 +14,7 @@ function BorrowingRecords() {
     "dueDate[lte]": "",
     "username[eq]": "",
     notPaid: false,
-    borrow: false,
+    borrowed: false,
     late: false,
     paid: false,
   });

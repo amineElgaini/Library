@@ -63,14 +63,14 @@ function BorrowingRecordsFilter({ filter, setFilter, pagination }) {
               Late
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
-              checked={filter.borrow}
+              checked={filter.borrowed}
               onCheckedChange={() => {
                 setFilter((p) => {
-                  return { ...p, page: 1, borrow: !p.borrow };
+                  return { ...p, page: 1, borrowed: !p.borrowed };
                 });
               }}
             >
-              Borrow
+              Borrowed
             </DropdownMenuCheckboxItem>
           </DropdownMenuContent>
         </DropdownMenu>

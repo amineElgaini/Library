@@ -21,7 +21,7 @@ class BorrowingRecordController extends Controller
     {
         $filter = new BorrowingRecordFilter();
         $queryItems = $filter->transform($request);
-        // return [["borrowing_date", ">=", "2024-04-2"]];
+
         $query = DB::table('borrowing_records')
             ->join('users', 'users.id', '=', 'borrowing_records.user_id')
             ->leftJoin('fines', 'borrowing_records.id', '=', 'fines.borrowing_record_id')
@@ -35,15 +35,23 @@ class BorrowingRecordController extends Controller
                 "actual_return_date as actualReturnDate",
                 "number_of_late_days as numberOfLateDays",
                 "fine_amount as fineAmount",
-                "payment_status as paymentStatus"
+                "payment_status as paymentStatus",
+                DB::raw("CASE 
+                WHEN payment_status = 1 THEN 'paid'
+                WHEN payment_status = 0 and actual_return_date is not null THEN 'notPaid'
+                WHEN due_date < now() and actual_return_date is null THEN 'late'
+                WHEN due_date > now() and actual_return_date is null THEN 'borrowed'
+                ELSE 'unknown'
+                END as status")
             );
+
         $query->where($queryItems)->where(function ($query) use ($request) {
             if ($request->query('notPaid') === "true") {
                 $query->where('payment_status', 0)
                     ->whereNotNull('actual_return_date');
             }
 
-            if ($request->query('borrow') === "true") {
+            if ($request->query('borrowed') === "true") {
                 $query->orWhere(function ($query) {
                     $query->whereNull('actual_return_date')
                         ->where('due_date', '>', now());
@@ -63,7 +71,6 @@ class BorrowingRecordController extends Controller
                 });
             }
         });
-
         return $query->paginate(10);
     }
 
@@ -93,9 +100,7 @@ class BorrowingRecordController extends Controller
      */
     public function show(Request $request, BorrowingRecord $borrowingRecord)
     {
-        if ($request->query('includeFine')) {
-            $borrowingRecord = $borrowingRecord->loadMissing('fine');
-        }
+        $borrowingRecord = $borrowingRecord->loadMissing('fine');
         return new BorrowingRecordResource($borrowingRecord);
     }
 
