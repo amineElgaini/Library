@@ -11,9 +11,9 @@ class BorrowingRecordFilter extends ApiFilter
         'copyId' => ['eq'],
         'userId' => ['eq'],
         'username' => ['eq', 'like'],
-        'borrowingDate' => ['eq', 'gt', 'lt'],
-        'dueDate' => ['eq', 'gt', 'lt'],
-        'actualReturnDate' => ['eq', 'gt', 'lt'],
+        'borrowingDate' => ['eq', 'gte', 'lte'],
+        'dueDate' => ['eq', 'gte', 'lte'],
+        'actualReturnDate' => ['eq', 'gte', 'lte'],
         'paymentStatus' => ['eq', 'neq'],
     ];
     protected $columnMap = [
@@ -28,7 +28,9 @@ class BorrowingRecordFilter extends ApiFilter
         'eq' => '=',
         'neq' => '!=',
         'gt' => '>',
+        'gte' => '>=',
         'lt' => '<',
+        'lte' => '<=',
         'like' => 'like',
     ];
 }

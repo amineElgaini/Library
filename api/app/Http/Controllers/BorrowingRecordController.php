@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Filters\BorrowingRecordFilter;
 use App\Http\Requests\StoreBorrowingRecordRequest;
-
+use Carbon\Carbon;
 
 class BorrowingRecordController extends Controller
 {
@@ -19,14 +19,9 @@ class BorrowingRecordController extends Controller
      */
     public function index(Request $request)
     {
-        // if ($request->query('includeFine')) {
-        //     return new BorrowingRecordCollection(BorrowingRecord::with('fine')->where($queryItems)->paginate());
-        // }
-        // return new BorrowingRecordCollection(BorrowingRecord::where($queryItems)->paginate());
-
         $filter = new BorrowingRecordFilter();
         $queryItems = $filter->transform($request);
-
+        // return [["borrowing_date", ">=", "2024-04-2"]];
         $query = DB::table('borrowing_records')
             ->join('users', 'users.id', '=', 'borrowing_records.user_id')
             ->leftJoin('fines', 'borrowing_records.id', '=', 'fines.borrowing_record_id')
