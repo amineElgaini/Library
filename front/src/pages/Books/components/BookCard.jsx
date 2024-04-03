@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
 import {
@@ -19,25 +18,27 @@ function BookCard({ book }) {
       <Tooltip>
         <TooltipTrigger asChild>
           <Link to={`/books/${book.bookId}`}>
-            <div className="border-2 p-3 rounded bor flex items-center space-x-4 w-[250px]">
-              <img
-                className="d-[50px] w-[50px]"
-                src={
-                  book.id % 2 === 0
-                    ? "https://d28hgpri8am2if.cloudfront.net/book_images/onix/cvr9781982137137/the-7-habits-of-highly-effective-people-9781982137137_hr.jpg"
-                    : "https://booksondemand.ma/cdn/shop/products/51fEYMhtHoL-min.jpg?v=1631701481"
-                }
-              />
-              <div className="space-y-1">
-                <h4 className="text-md font-semibold">{book.title}</h4>
-                <p className="text-sm h-[50px]">
+            <div className="border-2 w-[300px] flex rounded-lg p-4 m-2">
+              <div className="w-64 rounded-lg">
+                <img
+                  src="https://images.ctfassets.net/6nwv0fapso8r/6fHhKK91M3A1gWzMOnT2SC/e671b18c8ff765fe7537cb13fddf37e3/CC_ProductBook.png"
+                  alt=""
+                />
+              </div>
+              <div className="flex flex-col items-start ml-4">
+                <h4 className="text-xl font-semibold">{book.title}</h4>
+                <p className="text-sm">
                   {book.additionalDetails.substring(0, 50)}...
                 </p>
-                <div className="flex justify-between items-center pt-2">
-                  <Badge variant="secondary">{book.genre}</Badge>
+
+                <div className="flex w-full mt-3 items-center justify-between">
+                  <span className="leading-none uppercase rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-700/10">
+                    {book.genre}
+                  </span>
+
                   <div className="flex gap-1 text-xs text-muted-foreground">
                     <span>{formattedDate}</span>
-                    <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />{" "}
+                    <CalendarIcon className="mr-2 h-4 w-4 opacity-70" />
                   </div>
                 </div>
               </div>

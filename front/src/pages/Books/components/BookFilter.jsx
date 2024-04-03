@@ -18,9 +18,9 @@ function BookFilter({ setFilter, pagination }) {
   }, [filters]);
 
   return (
-    <div className="flex gap-2 mb-4 items-center flex-wrap">
+    <div className="flex justify-center gap-2 mb-4 items-center flex-wrap">
       <Input
-        className="w-[150px]"
+        className="w-[120px]"
         name="genre"
         value={filters.genre}
         onChange={(e) =>
@@ -32,7 +32,7 @@ function BookFilter({ setFilter, pagination }) {
       />
 
       <Input
-        className="w-[150px]"
+        className="w-[120px]"
         name="title"
         value={filters.title}
         onChange={(e) =>

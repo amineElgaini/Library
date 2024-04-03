@@ -1,7 +1,7 @@
 import Pagination from "@/components/Pagination";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
+import AddUser from "./AddUser";
 
 function UsersFilter({ setFilter, pagination }) {
   const [filters, setFilters] = useState({
@@ -16,15 +16,19 @@ function UsersFilter({ setFilter, pagination }) {
   }, [filters]);
   return (
     <div className="flex items-center justify-between mt-2">
-      <Input
-        className="w-[200px]"
-        placeholder="userName"
-        onChange={(e) => {
-          setFilters((p) => {
-            return { ...p, username: e.target.value };
-          });
-        }}
-      />
+      <div className="flex gap-2">
+        <AddUser />
+        <Input
+          className="w-[200px]"
+          placeholder="UserName"
+          onChange={(e) => {
+            setFilters((p) => {
+              return { ...p, username: e.target.value };
+            });
+          }}
+        />
+      </div>
+
       <Pagination setFilters={setFilters} pagination={pagination} />
     </div>
   );

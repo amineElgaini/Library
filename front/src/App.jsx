@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 
 import Books from "./pages/Books/Books";
-import NavBar from "./components/Navbar";
 import BooksDetails from "./pages/Books/BooksDetails";
 import Users from "./pages/Users/Users";
 import BorrowBook from "./pages/BorrowBook/BorrowBook";
@@ -40,7 +39,6 @@ function App() {
             <Route path="manageBooks" element={<ManageBooks />} />
           </Route>
         </Route>
-        
       </Routes>
     </>
   );

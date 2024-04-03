@@ -3,9 +3,9 @@
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\BorrowingRecordController;
-use App\Http\Controllers\CookieController;
 use App\Http\Controllers\CopyController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +24,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+// login
+Route::post('register', [UserController::class, 'store']);
+Route::post('login', [UserController::class, 'login']);
+Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
+Route::get('getLogedInUserInfo', [UserController::class, 'getLogedInUserInfo'])->middleware('auth:sanctum');
 
 // users
 Route::group(['middleware' => ['auth:sanctum', 'can:admin']], function () {
@@ -45,7 +52,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 // books
 Route::apiResource('books', BookController::class)->middleware(['auth:sanctum', 'can:admin'])->except(['index', 'show']);
 Route::apiResource('books', BookController::class)->only(['index', 'show']);
-
 // copies and borrowing records
 Route::group(['middleware' => ['auth:sanctum', 'can:admin']], function () {
     Route::apiResource('books.copies', CopyController::class)->shallow();
@@ -55,9 +61,5 @@ Route::group(['middleware' => ['auth:sanctum', 'can:admin']], function () {
     Route::post('/borrowingRecords/payBorrowedBook/{id}', [BorrowingRecordController::class, 'payBorrowedBook']);
 });
 
-// login
-Route::post('register', [UserController::class, 'store']);
-Route::post('login', [UserController::class, 'login']);
-Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
-
-Route::get('getLogedInUserInfo', [UserController::class, 'getLogedInUserInfo'])->middleware('auth:sanctum');
+// statistics
+Route::get('/statistics', [StatisticController::class, 'statistic']);

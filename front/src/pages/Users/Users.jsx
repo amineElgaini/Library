@@ -15,7 +15,7 @@ function Users() {
 
   return (
     <div className="container">
-      <AddUser />
+      
       <UsersFilter setFilter={setFilter} pagination={data?.data?.meta} />
       {isLoading ? "loading..." : <UsersTable users={data?.data?.data} />}
     </div>
