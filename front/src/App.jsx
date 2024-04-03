@@ -12,6 +12,7 @@ import Profile from "./pages/Profile/Profile";
 import Unauthorized from "./components/Unauthorized";
 import ManageBooks from "./pages/manageBooks/ManageBooks";
 import { MainDashboard } from "./pages/MainDashboard/MainDashboard";
+import Layout from "./components/Layout/Layout";
 const ROLES = {
   admin: 4,
 };
@@ -23,7 +24,7 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="unauthorized" element={<Unauthorized />} />
 
-        <Route path="/" element={<NavBar />}>
+        <Route path="/" element={<Layout />}>
           <Route path="books" element={<Books />} />
           <Route path="books/:id" element={<BooksDetails />} />
 
