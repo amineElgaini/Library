@@ -13,7 +13,7 @@ function Books() {
 
   return (
     <div className="container">
-      <BookFilter setFilter={setFilter} pagination={data?.data} />
+      <BookFilter filter={filter} setFilter={setFilter} pagination={data?.data} />
       <div className="flex gap-4 flex-wrap justify-center">
         {isError && "Error accured while displaying books"}
 

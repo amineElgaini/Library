@@ -2,48 +2,55 @@ import { Input } from "@/components/ui/input";
 import Pagination from "@/components/Pagination";
 import { useEffect, useState } from "react";
 
-function BookFilter({ setFilter, pagination }) {
-  const [filters, setFilters] = useState({
-    title: "",
-    genre: "",
-    page: 1,
-  });
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-  useEffect(() => {
-    setFilter({
-      page: filters.page,
-      "title[like]": filters.title,
-      "genre[like]": filters.genre,
-    });
-  }, [filters]);
-
+function BookFilter({ filter, setFilter, pagination }) {
   return (
-    <div className="flex justify-center gap-2 mb-4 items-center flex-wrap">
-      <Input
-        className="w-[120px]"
-        name="genre"
-        value={filters.genre}
-        onChange={(e) =>
-          setFilters((p) => {
-            return { ...p, genre: e.target.value };
-          })
-        }
-        placeholder="genre"
-      />
+    <div className="flex justify-between gap-2 mb-4 items-center flex-wrap">
+      <div className="flex gap-2">
+        <Select
+          value={filter["genre[like]"]}
+          onValueChange={(v) => {
+            setFilter((p) => {
+              return { ...p, ["genre[like]"]: v === "all" ? "" : v };
+            });
+          }}
+        >
+          <SelectTrigger className="w-[150px]">
+            <SelectValue placeholder="Select Genre" />
+          </SelectTrigger>
+          <SelectContent onChange={() => console.log("hi")}>
+            <SelectGroup>
+              <SelectLabel>Categories</SelectLabel>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="fun">Fun</SelectItem>
+              <SelectItem value="action">Action</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
 
-      <Input
-        className="w-[120px]"
-        name="title"
-        value={filters.title}
-        onChange={(e) =>
-          setFilters((p) => {
-            return { ...p, title: e.target.value };
-          })
-        }
-        placeholder="title"
-      />
+        <Input
+          className="w-[120px]"
+          name="title"
+          value={filter["title[like]"]}
+          onChange={(e) =>
+            setFilter((p) => {
+              return { ...p, ["title[like]"]: e.target.value };
+            })
+          }
+          placeholder="title"
+        />
+      </div>
 
-      <Pagination setFilters={setFilters} pagination={pagination} />
+      <Pagination setFilter={setFilter} pagination={pagination} />
     </div>
   );
 }
