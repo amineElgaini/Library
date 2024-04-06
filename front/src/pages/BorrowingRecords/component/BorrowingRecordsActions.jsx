@@ -1,4 +1,7 @@
-import { usePayBorrowedBook, useReturnBorrowedBook } from "@/hooks/useBorrow";
+import {
+  usePayBorrowedBook,
+  useReturnBorrowedBook,
+} from "@/hooks/reactQuery/useBorrowing";
 import ActionButton from "./ActionButton";
 
 function BorrowingRecordsActions({ borrowingRecord }) {

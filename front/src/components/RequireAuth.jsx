@@ -1,14 +1,11 @@
-import { useLocation, Navigate, Outlet, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
-import { useEffect } from "react";
-import { useGetLogedInUserInfo } from "@/hooks/useUsers";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useLocation, Navigate, Outlet } from "react-router-dom";
+import useAuth from "../hooks/context/useAuth";
 
 const RequireAuth = ({ allowedRoles = [] }) => {
   const { auth } = useAuth();
   const location = useLocation();
 
-  // require لاuthentification
+  // require authentication
   if (allowedRoles.length === 0 && auth?.username) {
     return <Outlet />;
   }
@@ -22,7 +19,7 @@ const RequireAuth = ({ allowedRoles = [] }) => {
   if (auth.username) {
     return <Navigate to="/unauthorized" state={{ from: location }} replace />;
   }
-  // // you are not authentificated
+  // you are not authentificated
   return <Navigate to="/login" state={{ from: location }} replace />;
 };
 

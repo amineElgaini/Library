@@ -1,6 +1,5 @@
 import { Input } from "@/components/ui/input";
 import Pagination from "@/components/Pagination";
-import { useEffect, useState } from "react";
 
 import {
   Select,
@@ -11,11 +10,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import AddBook from "@/pages/manageBooks/component/AddBook";
 
 function BookFilter({ filter, setFilter, pagination }) {
   return (
-    <div className="flex justify-between gap-2 mb-4 items-center flex-wrap">
-      <div className="flex gap-2">
+    <div className="flex justify-between gap-2 items-center flex-wrap">
+      <div className="flex items-center gap-2">
         <Select
           value={filter["genre[like]"]}
           onValueChange={(v) => {
@@ -33,6 +33,7 @@ function BookFilter({ filter, setFilter, pagination }) {
               <SelectItem value="all">All</SelectItem>
               <SelectItem value="fun">Fun</SelectItem>
               <SelectItem value="action">Action</SelectItem>
+              <SelectItem value="self thought">Self Thought</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>

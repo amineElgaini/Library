@@ -11,9 +11,10 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Pencil1Icon } from "@radix-ui/react-icons";
 import { useEditUser } from "@/hooks/reactQuery/useUsers";
 import { Loader2 } from "lucide-react";
-function EditUser({ user = {} }) {
+function Edit({ user = {} }) {
   const [username, setUserName] = useState(user.username);
   const [email, setEmail] = useState(user.email);
   const { mutate, isPending } = useEditUser();
@@ -85,4 +86,4 @@ function EditUser({ user = {} }) {
   );
 }
 
-export default EditUser;
+export default Edit;

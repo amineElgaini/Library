@@ -1,8 +1,6 @@
 import { Button } from "@/components/ui/button";
-import axios from "axios";
 import { useState } from "react";
-import useAuth from "@/hooks/useAuth";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import {
   Card,
@@ -13,41 +11,14 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useLogin } from "@/hooks/reactQuery/useAuth";
+import { Loader2 } from "lucide-react";
 
 function Login() {
-  const { auth, setAuth } = useAuth();
-
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const from = location?.state?.from.pathname || "/books";
-
   const [email, setEmail] = useState("amine@gmail.com");
   const [password, setPassword] = useState("amine");
 
-  // if (auth.username) {
-  //   return <Navigate to="/profile" replace />;
-  // }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_KEY}/api/login`,
-        { email, password }
-      );
-      const auth = {
-        username: response?.data.username,
-        roles: response?.data.roles,
-      };
-
-      localStorage.setItem("accessToken", response?.data.token);
-      setAuth(auth);
-      navigate(from, { replace: true });
-    } catch (error) {
-      // console.log(error);
-    }
-  };
+  const { mutate: login, isPending } = useLogin();
 
   return (
     <>
@@ -94,7 +65,18 @@ function Login() {
                   required
                 />
               </div>
-              <Button onClick={handleSubmit} type="submit" className="w-full">
+
+              <Button
+                onClick={() => {
+                  login({ email, password });
+                }}
+                disabled={isPending ? true : false}
+              >
+                {isPending ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  ""
+                )}
                 Login
               </Button>
               <Button variant="outline" className="w-full">
@@ -103,7 +85,7 @@ function Login() {
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
-              <Link href="#" className="underline">
+              <Link to="/login" className="underline">
                 Sign up
               </Link>
             </div>

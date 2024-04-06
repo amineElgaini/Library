@@ -5,7 +5,6 @@ const fetchStatistics = () => {
   return request({ url: "/statistics"});
 };
 
-
 export const useStatisticsData = () => {
   return useQuery({
     queryKey: ["statistics"],

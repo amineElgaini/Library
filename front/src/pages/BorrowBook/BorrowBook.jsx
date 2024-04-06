@@ -1,7 +1,8 @@
-import { useBooksData } from "@/hooks/useBook";
+import { useBooksData } from "@/hooks/reactQuery/useManageBooks";
 import { useState } from "react";
 import BooksTable from "./component/BooksTable";
 import BookFilter from "../Books/components/BookFilter";
+import AddBook from "../manageBooks/component/AddBook";
 
 function BorrowBook() {
   const [filter, setFilter] = useState({
@@ -13,8 +14,13 @@ function BorrowBook() {
 
   return (
     <div className="container">
-      <BookFilter setFilter={setFilter} pagination={data?.data} />
-      <div className="flex gap-4 flex-wrap justify-center">
+      <AddBook /> 
+      <BookFilter
+        filter={filter}
+        setFilter={setFilter}
+        pagination={data?.data}
+      />
+      <div className="mt-4 flex gap-4 flex-wrap justify-center">
         {isError && "error"}
         {isLoading ? "laoding..." : <BooksTable books={data?.data?.data} />}
       </div>

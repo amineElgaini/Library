@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useGetUser } from "@/hooks/useUsers";
+import { useGetUser } from "@/hooks/reactQuery/useUsers";
 import LoadinLodingSpinner from "@/components/LodingSpinner";
 
 function MoreUserDetails({ user }) {
@@ -19,7 +19,9 @@ function MoreUserDetails({ user }) {
     <Dialog>
       <DialogTrigger
         className="hover:bg-green-500/40 duration-300 transition rounded-full p-1 text-green-500 cursor-pointer"
-        onClick={() => {setUserId(user.id)}}
+        onClick={() => {
+          setUserId(user.id);
+        }}
       >
         <span>
           <svg

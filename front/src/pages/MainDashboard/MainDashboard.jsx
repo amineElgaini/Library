@@ -24,7 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useStatisticsData } from "@/hooks/useStatistics";
+import { useStatisticsData } from "@/hooks/reactQuery/useStatistics";
 
 export function MainDashboard() {
   const { data, isLoading } = useStatisticsData();

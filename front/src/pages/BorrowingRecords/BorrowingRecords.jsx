@@ -1,4 +1,4 @@
-import { useBorrowingRecordsData } from "@/hooks/useBorrow";
+import { useBorrowingRecordsData } from "@/hooks/reactQuery/useBorrowing";
 
 import BorrowingRecrodsTable from "./component/BorrowingRecrodsTable";
 import { useState } from "react";
@@ -27,7 +27,7 @@ function BorrowingRecords() {
         setFilter={setFilter}
         pagination={data?.data}
       />
-      {isError && "error accured while displaying borrowing records"}
+      {isError && "Error Accrued While Displaying Borrowing Records"}
       {isLoading ? (
         "loading..."
       ) : (

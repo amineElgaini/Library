@@ -9,8 +9,6 @@ use App\Filters\UserFilter;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserCollection;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
@@ -84,37 +82,5 @@ class UserController extends Controller
                 'error' => 'Failed to delete user: '
             ], 400);
         }
-    }
-
-    public function login(Request $request)
-    {
-        $user = User::where('email', $request->input('email'))->first();
-        if (!$user) {
-            return response()->json(["message" => "user not found"], 401);
-        }
-        if (!Hash::check($request->input("password"), $user->password)) {
-            return response()->json(["message" => "wrong password"], 401);
-        }
-
-        $token = $user->createToken("auth_token")->plainTextToken;
-        $roles = $user->permissions()->get()->pluck('id');
-
-        return response()->json(['roles' => $roles, 'username' => $user->username, 'token' => $token]);
-    }
-
-    public function getLogedInUserInfo(Request $request)
-    {
-        $user = $request->user();
-        $roles = $user->permissions()->get()->pluck('id');
-
-        return response()->json(['roles' => $roles, 'username' => $user->username]);
-    }
-
-    public function logout(Request $request)
-    {
-        auth()->user()->tokens()->delete();
-        return response()->json([
-            'message' => 'loged out',
-        ], 200);
     }
 }

@@ -15,6 +15,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Edit from "./Edit";
+import Delete from "./Delete";
+import More from "./More";
 
 function BooksTable({ books }) {
   return (
@@ -35,20 +38,10 @@ function BooksTable({ books }) {
                 <TableCell className="font-medium">{book.bookId}</TableCell>
                 <TableCell>{book.isbn}</TableCell>
                 <TableCell>{book.title}</TableCell>
-                <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <span className="sr-only">Open menu</span>
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem>More Info</DropdownMenuItem>
-                      <DropdownMenuItem>Edit Book</DropdownMenuItem>
-                      <DropdownMenuItem>Delete</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                <TableCell className="flex items-center gap-3">
+                  <More book={book} />
+                  {/* - <Edit book={book} /> */}
+                  {/* - <Delete book={book} /> */}
                 </TableCell>
               </TableRow>
             );

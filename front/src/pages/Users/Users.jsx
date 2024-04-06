@@ -1,6 +1,5 @@
-import { useUsersData } from "@/hooks/useUsers";
+import { useUsersData } from "@/hooks/reactQuery/useUsers";
 
-import AddUser from "./component/AddUser";
 import { useState } from "react";
 import UsersTable from "./component/UsersTable";
 import UsersFilter from "./component/UsersFilter";
@@ -15,7 +14,6 @@ function Users() {
 
   return (
     <div className="container">
-      
       <UsersFilter setFilter={setFilter} pagination={data?.data?.meta} />
       {isLoading ? "loading..." : <UsersTable users={data?.data?.data} />}
     </div>

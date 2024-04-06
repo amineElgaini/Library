@@ -29,9 +29,7 @@ const addUser = (user) => {
   return request({ url: "/users", method: "post", data: user });
 };
 
-const getLogedInUserInfo = () => {
-  return request({ url: "/getLogedInUserInfo" });
-};
+
 
 export const useEditUser = () => {
   return useMutation({
@@ -53,14 +51,6 @@ export const useGetUser = (id) => {
   return useQuery({
     queryKey: ["users", id],
     queryFn: fetchUser,
-  });
-};
-
-export const useGetLogedInUserInfo = () => {
-  return useQuery({
-    queryKey: ["getLogedInUserInfo"],
-    queryFn: getLogedInUserInfo,
-    retry: false,
   });
 };
 

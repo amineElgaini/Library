@@ -20,7 +20,7 @@ function BooksDetails() {
   return (
     <div>
       {isLoading ? (
-        "loadin..."
+        "loading..."
       ) : (
         <>
           <p>

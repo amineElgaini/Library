@@ -8,19 +8,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CircleUser, LifeBuoy, LogOut, Settings, User } from "lucide-react";
 import { Button } from "../ui/button";
-import useAuth from "@/hooks/useAuth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useLogout } from "@/hooks/reactQuery/useAuth";
+import Spinner from "../Spinner";
 
 function ProfileDropDown() {
-  const { setAuth } = useAuth();
-  const navigate = useNavigate();
+  const { mutate: logout, isPending } = useLogout();
 
-  const logout = () => {
-    setAuth({});
-    localStorage.removeItem("accessToken");
-    navigate("/books");
-  };
   return (
+    <>
+    {isPending ? <Spinner/> :
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="secondary" size="icon" className="rounded-full">
@@ -51,7 +48,8 @@ function ProfileDropDown() {
           Logout
         </DropdownMenuItem>
       </DropdownMenuContent>
-    </DropdownMenu>
+    </DropdownMenu>}
+    </>
   );
 }
 

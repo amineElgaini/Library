@@ -1,28 +1,32 @@
 import { useState } from "react";
-import { useBooksData } from "@/hooks/useBook";
+import { useBooksData } from "@/hooks/reactQuery/useManageBooks";
 import BookCard from "./components/BookCard";
-import CardLoading from "./components/CardLoading";
+import BookLoadingCard from "./components/BookLoadingCard";
 import BookFilter from "./components/BookFilter";
+
 function Books() {
   const [filter, setFilter] = useState({
     page: 1,
     "title[like]": "",
     "genre[like]": "",
   });
-  const { data, isLoading, isError } = useBooksData(filter);
-
+  const { data, isLoading, isSuccess, isError } = useBooksData(filter);
   return (
     <div className="container">
-      <BookFilter filter={filter} setFilter={setFilter} pagination={data?.data} />
-      <div className="flex gap-4 flex-wrap justify-center">
-        {isError && "Error accured while displaying books"}
+      <BookFilter
+        filter={filter}
+        setFilter={setFilter}
+        pagination={data?.data}
+      />
 
+      <div className="mt-4 flex gap-4 flex-wrap justify-center">
+        {isError && "Error Accrued while displaying books"}
         {isLoading &&
           Array(10)
             .fill(null)
-            .map((_, index) => <CardLoading key={index} />)}
-
-        {data?.data.data &&
+            .map((_, index) => <BookLoadingCard key={index} />)
+        }
+        {!isLoading  && isSuccess &&
           data?.data.data.map((book) => {
             return <BookCard key={book.bookId} book={book} />;
           })}

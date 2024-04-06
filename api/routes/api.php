@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\BorrowingRecordController;
@@ -26,19 +27,24 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-// login
-Route::post('register', [UserController::class, 'store']);
-Route::post('login', [UserController::class, 'login']);
-Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
-Route::get('getLogedInUserInfo', [UserController::class, 'getLogedInUserInfo'])->middleware('auth:sanctum');
+// Authentification
+Route::controller(AuthController::class)->group(function () {
+    Route::post('login', 'login');
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+        Route::post('logout', 'logout');
+        Route::get('getLogedInUserInfo', 'getLogedInUserInfo');
+    });
+});
 
-// users
+
+// Manage Users
 Route::group(['middleware' => ['auth:sanctum', 'can:admin']], function () {
     Route::apiResource('users', UserController::class);
     Route::get('users/findByUsername/{username:username}', [UserController::class, 'findByUsername']);
 });
 
-// profile
+
+// User Profile
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/profile/allBorrowedBooks', 'allBorrowedBooks');
@@ -49,17 +55,26 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
 });
 
-// books
+
+// Manage Books
 Route::apiResource('books', BookController::class)->middleware(['auth:sanctum', 'can:admin'])->except(['index', 'show']);
+// Show Books
 Route::apiResource('books', BookController::class)->only(['index', 'show']);
-// copies and borrowing records
+
+
+// Manage Copies
 Route::group(['middleware' => ['auth:sanctum', 'can:admin']], function () {
     Route::apiResource('books.copies', CopyController::class)->shallow();
+});
 
+
+// Manage Borrowing Records
+Route::group(['middleware' => ['auth:sanctum', 'can:admin']], function () {
     Route::apiResource('borrowingRecords', BorrowingRecordController::class);
     Route::post('/borrowingRecords/returnBorrowedBook/{id}', [BorrowingRecordController::class, 'returnBorrowedBook']);
     Route::post('/borrowingRecords/payBorrowedBook/{id}', [BorrowingRecordController::class, 'payBorrowedBook']);
 });
 
-// statistics
+
+// Statistics
 Route::get('/statistics', [StatisticController::class, 'statistic']);

@@ -1,25 +1,31 @@
-import { useBooksData } from "@/hooks/useBook";
+import { useBooksData } from "@/hooks/reactQuery/useManageBooks";
 import BooksTable from "./component/BooksTable";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import BookFilter from "../Books/components/BookFilter";
+import { useState } from "react";
+import AddBook from "./component/AddBook";
 
 function ManageBooks() {
-  const { data, isLoading } = useBooksData();
+  const [filter, setFilter] = useState({
+    page: 1,
+    "title[like]": "",
+    "genre[like]": "",
+  });
+  const { data, isError, isLoading } = useBooksData(filter);
 
   return (
     <>
-      <div className="flex items-center justify-between">
-        <Input type="text" className="w-[200px]" placeholder="isbn" />
-        <div className="space-x-2">
-          <Button variant="outline" size="sm">
-            Previous
-          </Button>
-          <Button variant="outline" size="sm">
-            Next
-          </Button>
+      <div className="container">
+        <BookFilter
+          filter={filter}
+          setFilter={setFilter}
+          pagination={data?.data}
+        />
+
+        <div className="flex gap-4 flex-wrap justify-center">
+          {isError && "error"}
+          {isLoading ? "laoding..." : <BooksTable books={data?.data?.data} />}
         </div>
       </div>
-      {isLoading ? "loading..." : <BooksTable books={data?.data.data} />}
     </>
   );
 }

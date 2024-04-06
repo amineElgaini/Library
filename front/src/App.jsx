@@ -12,6 +12,8 @@ import Unauthorized from "./components/Unauthorized";
 import ManageBooks from "./pages/manageBooks/ManageBooks";
 import { MainDashboard } from "./pages/MainDashboard/MainDashboard";
 import Layout from "./components/Layout/Layout";
+import MainLayout from "./components/Layout/MainLayout";
+
 const ROLES = {
   admin: 4,
 };
@@ -23,7 +25,7 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="unauthorized" element={<Unauthorized />} />
 
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<MainLayout />}>
           <Route path="books" element={<Books />} />
           <Route path="books/:id" element={<BooksDetails />} />
 

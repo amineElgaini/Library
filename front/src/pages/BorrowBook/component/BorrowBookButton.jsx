@@ -11,16 +11,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { useGetUserByName } from "@/hooks/useUsers";
-import { useBorrowBook } from "@/hooks/useBorrow";
+import { useGetUserByName } from "@/hooks/reactQuery/useUsers";
+import { useBorrowBook } from "@/hooks/reactQuery/useBorrowing";
 import LoadinLodingSpinner from "@/components/LodingSpinner";
 
 function BorrowBookButton({ bookId }) {
   const [username, setUsername] = useState("");
   const { data: user, isLoading } = useGetUserByName(username);
-  const { mutate } = useBorrowBook();
+  const { mutate: borrowBook } = useBorrowBook();
+  
   const handleBorrow = () => {
-    mutate({
+    borrowBook({
       userId: user?.data?.data?.id,
       bookId: bookId,
       borrowingDays: 3,

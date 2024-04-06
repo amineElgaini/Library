@@ -18,10 +18,10 @@ function BookCard({ book }) {
       <Tooltip>
         <TooltipTrigger asChild>
           <Link to={`/books/${book.bookId}`}>
-            <div className="border-2 w-[300px] flex rounded-lg p-4 m-2">
-              <div className="w-64 rounded-lg">
+            <div className="border-2 w-[300px] flex rounded-lg p-3 m-2">
+              <div className="w-36 rounded-lg">
                 <img
-                  src="https://images.ctfassets.net/6nwv0fapso8r/6fHhKK91M3A1gWzMOnT2SC/e671b18c8ff765fe7537cb13fddf37e3/CC_ProductBook.png"
+                  src="./BookImage.png"
                   alt=""
                 />
               </div>

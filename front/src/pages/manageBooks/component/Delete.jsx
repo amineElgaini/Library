@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useDeleteUser } from "@/hooks/reactQuery/useUsers";
 
-function DeleteUser({ user }) {
+function Delete({ user }) {
   const { mutate: mutateDelete } = useDeleteUser();
 
   return (
@@ -54,4 +54,4 @@ function DeleteUser({ user }) {
   );
 }
 
-export default DeleteUser;
+export default Delete;
