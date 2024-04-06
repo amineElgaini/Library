@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge";
 function BorrowingRecordStatus({ borrowingRecord }) {
   return (
     <>
-      {borrowingRecord.status == "borrow" ? (
-        <Badge className={"whitespace-nowrap"}>borrow</Badge>
+      {borrowingRecord.status == "borrowed" ? (
+        <Badge className={"whitespace-nowrap"}>borrowed</Badge>
       ) : borrowingRecord.status == "paid" ? (
         <Badge className={"whitespace-nowrap"} variant="success">
           Paid

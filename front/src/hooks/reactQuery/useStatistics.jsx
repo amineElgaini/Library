@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { request } from "@/utils/axios-utils";
 
 const fetchStatistics = () => {
-  return request({ url: "/statistics"});
+  return request({ url: "/statistics" });
 };
 
 export const useStatisticsData = () => {
@@ -12,3 +12,13 @@ export const useStatisticsData = () => {
   });
 };
 
+const fetchTopThreeBooks = () => {
+  return request({ url: "/statistics/topThreeBooks" });
+};
+
+export const useTopThreeBooks = () => {
+  return useQuery({
+    queryKey: ["statistics/topThreeBooks"],
+    queryFn: fetchTopThreeBooks,
+  });
+};

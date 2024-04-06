@@ -19,7 +19,6 @@ function BorrowingRecords() {
     paid: false,
   });
   const { data, isLoading, isError } = useBorrowingRecordsData(filter);
-
   return (
     <div className="container">
       <BorrowingRecordsFilter

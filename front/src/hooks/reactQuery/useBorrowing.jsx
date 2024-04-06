@@ -3,7 +3,6 @@ import { request } from "@/utils/axios-utils";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 
-
 const returnBorrowedBook = ({ borrowId }) => {
   return request({
     url: `/borrowingRecords/returnBorrowedBook/${borrowId}`,
@@ -23,7 +22,6 @@ export const useReturnBorrowedBook = () => {
   });
 };
 
-
 const payBorrowedBook = ({ borrowId }) => {
   return request({
     url: `/borrowingRecords/payBorrowedBook/${borrowId}`,
@@ -37,12 +35,11 @@ export const usePayBorrowedBook = () => {
     mutationFn: payBorrowedBook,
     onError: (error) => toast.error(error.message),
     onSuccess: () => {
-      toast.success("Book Paid Succefuly"),
-        queryClient.refetchQueries({ queryKey: ["borrowingRecordsData"] });
+      toast.success("Book Paid Succefuly");
+      queryClient.refetchQueries({ queryKey: ["borrowingRecordsData"] });
     },
   });
 };
-
 
 const borrowingRecordsData = ({ queryKey }) => {
   const params = queryKey[1];
@@ -55,7 +52,6 @@ export const useBorrowingRecordsData = (filters) => {
     queryFn: borrowingRecordsData,
   });
 };
-
 
 const borrowBook = (borrowInfo) => {
   return request({
@@ -71,8 +67,8 @@ export const useBorrowBook = () => {
     mutationFn: borrowBook,
     onError: (error) => toast.error(error.message),
     onSuccess: () => {
-      toast.success("Book Borrowed Succefuly"),
-        queryClient.refetchQueries({ queryKey: ["borrowingRecordsData"] });
+      toast.success("Book Borrowed Succefuly");
+      queryClient.refetchQueries({ queryKey: ["books"] });
     },
   });
 };

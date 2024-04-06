@@ -19,7 +19,7 @@ function Navbar({ links, auth }) {
         <>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <span className="flex items-center cursor-pointer text-muted-foreground hover:text-foreground">
+              <span className="flex items-center gap-1 cursor-pointer text-muted-foreground hover:text-foreground">
                 Dashboards{" "}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
