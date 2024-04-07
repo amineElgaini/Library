@@ -26,16 +26,31 @@ class StatisticController extends Controller
     }
 
     // most borrowed
-    public function topThreeUsers()
+    public function topUsers()
     {
+        return User::select('users.id', 'users.username', 'users.email')
+            ->selectRaw('COUNT(*) as borrowedTimes')
+            ->join('borrowing_records', 'users.id', '=', 'borrowing_records.user_id')
+            ->groupBy('users.id', 'users.username')
+            ->orderByDesc('borrowedTimes')
+            ->limit(5)
+            ->get();
     }
 
-    public function topThreeBooks()
+    public function topBooks()
     {
-        return Book::select('books.id', 'books.title', DB::raw('COUNT(*) as borrowedTimes'))
+        return Book::select(
+            'books.id',
+            'books.isbn',
+            'books.title',
+            DB::raw('cast(SUM(CASE WHEN actual_return_date IS NULL THEN 1 ELSE 0 END)as int) AS borrowedNow'),
+            DB::raw('COUNT(*) as borrowedTimes')
+        )
             ->join('copies', 'copies.book_id', '=', 'books.id')
             ->join('borrowing_records', 'borrowing_records.copy_id', '=', 'copies.id')
-            ->groupBy('books.id', 'books.title')
+            ->groupBy('books.id')
+            ->orderByDesc('borrowedTimes')
+            ->limit(5)
             ->get();
     }
 }

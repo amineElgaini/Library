@@ -12,13 +12,13 @@ export const useStatisticsData = () => {
   });
 };
 
-const fetchTopThreeBooks = () => {
-  return request({ url: "/statistics/topThreeBooks" });
+const fetchTopBooks = () => {
+  return request({ url: "/statistics/topBooks" });
 };
 
-export const useTopThreeBooks = () => {
+export const useTopBooks = () => {
   return useQuery({
-    queryKey: ["statistics/topThreeBooks"],
-    queryFn: fetchTopThreeBooks,
+    queryKey: ["statistics/topBooks"],
+    queryFn: fetchTopBooks,
   });
 };
