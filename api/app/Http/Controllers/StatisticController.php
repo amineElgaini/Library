@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\lastSevenDaysBorrowsResource;
 use App\Models\Book;
 use App\Models\BorrowingRecord;
 use App\Models\Fine;
 use App\Models\User;
+use App\Models\VwGetLastSevenDay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -52,5 +54,19 @@ class StatisticController extends Controller
             ->orderByDesc('borrowedTimes')
             ->limit(5)
             ->get();
+    }
+
+    public function lastSevenDaysBorrows()
+    {
+        $records = VwGetLastSevenDay::leftJoin('vw_get_last_borrow_for_last_7_days', 'vw_get_last_seven_days.date', '=', 'vw_get_last_borrow_for_last_7_days.borrowing_date')
+            ->select([
+                'vw_get_last_seven_days.date',
+                DB::raw('DAYNAME(vw_get_last_seven_days.date) AS day_name'),
+                DB::raw('DAYOFWEEK(vw_get_last_seven_days.date) AS day_number'),
+                DB::raw('CASE WHEN borrows IS NULL THEN 0 ELSE borrows END AS borrows')
+            ])
+            ->orderBy('vw_get_last_seven_days.date')
+            ->get();
+        return LastSevenDaysBorrowsResource::collection($records);
     }
 }

@@ -80,3 +80,4 @@ Route::group(['middleware' => ['auth:sanctum', 'can:admin']], function () {
 Route::get('/statistics', [StatisticController::class, 'statistic']);
 Route::get('/statistics/topUsers', [StatisticController::class, 'topUsers']);
 Route::get('/statistics/topBooks', [StatisticController::class, 'topBooks']);
+Route::get('/statistics/lastSevenDaysBorrows', [StatisticController::class, 'lastSevenDaysBorrows']);

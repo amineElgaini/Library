@@ -18,10 +18,14 @@ function BookCard({ book }) {
       <Tooltip>
         <TooltipTrigger asChild>
           <Link to={`/books/${book.bookId}`}>
-            <div className="border-2 w-[300px] flex rounded-lg p-3 m-2">
-              <div className="w-36 rounded-lg">
+            <div className="border-2 w-[300px] flex items-center rounded-lg p-3 m-2">
+              <div className="w-28 rounded-lg">
                 <img
-                  src="./BookImage.png"
+                  src={
+                    book.bookId % 2 === 0
+                      ? "./BookImage.png"
+                      : "./BookImage2.png"
+                  }
                   alt=""
                 />
               </div>

@@ -22,3 +22,14 @@ export const useTopBooks = () => {
     queryFn: fetchTopBooks,
   });
 };
+
+const fetchTopUsers = () => {
+  return request({ url: "/statistics/topUsers" });
+};
+
+export const useTopUsers = () => {
+  return useQuery({
+    queryKey: ["statistics/topUsers"],
+    queryFn: fetchTopUsers,
+  });
+};
