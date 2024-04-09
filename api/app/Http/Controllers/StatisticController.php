@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\lastSevenDaysBorrowsResource;
 use App\Models\Book;
 use App\Models\BorrowingRecord;
+use App\Models\Copy;
 use App\Models\Fine;
 use App\Models\User;
 use App\Models\VwGetLastSevenDay;
@@ -68,5 +69,12 @@ class StatisticController extends Controller
             ->orderBy('vw_get_last_seven_days.date')
             ->get();
         return LastSevenDaysBorrowsResource::collection($records);
+    }
+
+    public function borrowedBooksCount()
+    {
+        $borrowedBookCount = Copy::where('availability_status', 0)->count();
+        $bookCount = Copy::count();
+        return ["borrowedBookCount" => $borrowedBookCount, "bookCount" => $bookCount];
     }
 }

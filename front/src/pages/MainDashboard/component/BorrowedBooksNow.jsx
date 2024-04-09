@@ -1,13 +1,19 @@
+import { useBorrowedBooksCount } from "@/hooks/reactQuery/useStatistics";
 import { Doughnut } from "react-chartjs-2";
 
-
 function BorrowedBooksNow() {
+  const { data: dataChart, isLoading } = useBorrowedBooksCount();
+  console.log(isLoading, dataChart?.data);
+
   const data = {
-    labels: ["Not Availble", "Availble"],
+    labels: ["Available", "Borrowed"],
     datasets: [
       {
         label: "# of Votes",
-        data: [2, 3],
+        data: [
+          dataChart?.data?.bookCount - dataChart?.data?.borrowedBookCount,
+          dataChart?.data?.borrowedBookCount,
+        ],
         backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(255, 159, 64, 0.2)"],
         borderColor: ["rgba(54, 162, 235, 1)", "rgba(255, 159, 64, 1)"],
         borderWidth: 1,

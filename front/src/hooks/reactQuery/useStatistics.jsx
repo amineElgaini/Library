@@ -44,3 +44,14 @@ export const useLastSevenDaysBorrows = () => {
     queryFn: fetchLastSevenDaysBorrows,
   });
 };
+
+const fetchBorrowedBooksCount = () => {
+  return request({ url: "/statistics/borrowedBooksCount" });
+};
+
+export const useBorrowedBooksCount = () => {
+  return useQuery({
+    queryKey: ["statistics/borrowedBooksCount"],
+    queryFn: fetchBorrowedBooksCount,
+  });
+};

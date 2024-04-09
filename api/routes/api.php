@@ -81,3 +81,4 @@ Route::get('/statistics', [StatisticController::class, 'statistic']);
 Route::get('/statistics/topUsers', [StatisticController::class, 'topUsers']);
 Route::get('/statistics/topBooks', [StatisticController::class, 'topBooks']);
 Route::get('/statistics/lastSevenDaysBorrows', [StatisticController::class, 'lastSevenDaysBorrows']);
+Route::get('/statistics/borrowedBooksCount', [StatisticController::class, 'borrowedBooksCount']);
