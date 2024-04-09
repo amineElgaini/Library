@@ -1,40 +1,17 @@
+import { useLastSevenDaysBorrows } from "@/hooks/reactQuery/useStatistics";
 import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarController,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
 
-ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  BarController
-);
-
-const BorrowedBookChart = () => {
+const BorrowedBooksLately = () => {
+  const {
+    data: chartData,
+    isLoading,
+  } = useLastSevenDaysBorrows();
   const data = {
-    labels: [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ],
+    labels: chartData?.data?.data.map((e) => e.dayName),
     datasets: [
       {
-        label: "My First Dataset",
-        data: [65, 59, 80, 81, 56, 55, 40],
+        label: "Borrows",
+        data: chartData?.data?.data.map((e) => e.borrows),
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(255, 159, 64, 0.2)",
@@ -58,19 +35,14 @@ const BorrowedBookChart = () => {
     ],
   };
 
-  const options = {
-    scales: {
-      y: {
-        beginAtZero: true,
-      },
-    },
-  };
-
   return (
     <div>
-      <Bar data={data} options={options} />
+      <h1 className="text-2xl font-semibold text-center mb-2">
+        Borrows In The Last Seven Days
+      </h1>
+      {isLoading ? "loading..." : <Bar data={data} />}
     </div>
   );
 };
 
-export default BorrowedBookChart;
+export default BorrowedBooksLately;

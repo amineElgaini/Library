@@ -33,3 +33,14 @@ export const useTopUsers = () => {
     queryFn: fetchTopUsers,
   });
 };
+
+const fetchLastSevenDaysBorrows = () => {
+  return request({ url: "/statistics/lastSevenDaysBorrows" });
+};
+
+export const useLastSevenDaysBorrows = () => {
+  return useQuery({
+    queryKey: ["statistics/lastSevenDaysBorrows"],
+    queryFn: fetchLastSevenDaysBorrows,
+  });
+};

@@ -11,8 +11,30 @@ import Profile from "./pages/Profile/Profile";
 import Unauthorized from "./components/Unauthorized";
 import ManageBooks from "./pages/manageBooks/ManageBooks";
 import { MainDashboard } from "./pages/MainDashboard/MainDashboard";
-import Layout from "./components/Layout/Layout";
 import MainLayout from "./components/Layout/MainLayout";
+
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarController,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement,
+} from "chart.js";
+
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  BarController,
+  ArcElement
+);
 
 const ROLES = {
   admin: 4,
