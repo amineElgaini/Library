@@ -4,13 +4,14 @@ import { Bar } from "react-chartjs-2";
 const BorrowedBooksLately = () => {
   const {
     data: chartData,
-    isLoading,
+    isLoading
   } = useLastSevenDaysBorrows();
+  
   const data = {
     labels: chartData?.data?.data.map((e) => e.dayName),
     datasets: [
       {
-        label: "Borrows",
+        label: `Borrows [${chartData?.data?.data[0]?.date}  -  ${chartData?.data?.data[chartData?.data?.data.length - 1]?.date}]`,
         data: chartData?.data?.data.map((e) => e.borrows),
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
@@ -37,10 +38,10 @@ const BorrowedBooksLately = () => {
 
   return (
     <div>
+      {isLoading ? "loading..." : <Bar data={data} />}
       <h1 className="text-2xl font-semibold text-center mb-2">
         Borrows In The Last Seven Days
       </h1>
-      {isLoading ? "loading..." : <Bar data={data} />}
     </div>
   );
 };

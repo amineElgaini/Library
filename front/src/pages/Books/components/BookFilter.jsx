@@ -15,7 +15,7 @@ import AddBook from "@/pages/manageBooks/component/AddBook";
 function BookFilter({ filter, setFilter, pagination }) {
   return (
     <div className="flex justify-between gap-2 items-center flex-wrap">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 flex-wrap">
         <Select
           value={filter["genre[like]"]}
           onValueChange={(v) => {
@@ -27,7 +27,7 @@ function BookFilter({ filter, setFilter, pagination }) {
           <SelectTrigger className="w-[150px]">
             <SelectValue placeholder="Select Genre" />
           </SelectTrigger>
-          <SelectContent onChange={() => console.log("hi")}>
+          <SelectContent>
             <SelectGroup>
               <SelectLabel>Categories</SelectLabel>
               <SelectItem value="all">All</SelectItem>

@@ -27,10 +27,10 @@ function BorrowedBooksNow() {
   };
   return (
     <div>
+      <Doughnut data={data} config={config} />
       <h1 className="text-2xl font-semibold text-center mb-2">
         Borrowed Books Now
       </h1>
-      <Doughnut data={data} config={config} />
     </div>
   );
 }

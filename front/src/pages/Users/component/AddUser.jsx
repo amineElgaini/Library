@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Pencil1Icon } from "@radix-ui/react-icons";
 import { useAddUserData } from "@/hooks/reactQuery/useUsers";
 import { Loader2 } from "lucide-react";
 function AddUser() {

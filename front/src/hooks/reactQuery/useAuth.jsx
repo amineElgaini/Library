@@ -9,12 +9,11 @@ const getLogedInUserInfo = () => {
 };
 
 export const useGetLogedInUserInfo = () => {
-  console.log("hi")
   return useQuery({
     queryKey: ["getLogedInUser"],
     queryFn: getLogedInUserInfo,
     retry: false,
-    staleTime: Infinity
+    staleTime: Infinity,
   });
 };
 
