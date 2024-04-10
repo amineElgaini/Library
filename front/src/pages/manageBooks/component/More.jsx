@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useGetUser } from "@/hooks/reactQuery/useUsers";
-import LoadinLodingSpinner from "@/components/LodingSpinner";
+import LoadinLodingSpinner from "@/components/LoadingSpinner";
 
 function More({ user }) {
   const [userId, setUserId] = useState();

@@ -30,27 +30,41 @@ class CopyController extends Controller
      */
     public function store(Request $request, Book $book)
     {
+        // try {
+        //     DB::beginTransaction();
+
+        //     $numberOfCopies = (int) $request->number;
+        //     $book->number_of_copies += $numberOfCopies;
+
+        //     $data = [];
+        //     for ($i = 0; $i < $numberOfCopies; $i++) {
+        //         $data[] = ["book_id" => $book->id];
+        //     }
+
+        //     $timestamp = Carbon::now();
+        //     foreach ($data as &$record) {
+        //         $record['created_at'] = $timestamp;
+        //         $record['updated_at'] = $timestamp;
+        //     }
+        //     Copy::insert($data);
+        //     $book->save();
+
+        //     DB::commit();
+        //     return response()->json(['message' => 'success'], 200);
+        // } catch (\Exception $e) {
+        //     DB::rollBack();
+        //     return response()->json(['message' => 'error'], 400);
+        // }
         try {
             DB::beginTransaction();
 
-            $numberOfCopies = (int) $request->number;
-            $book->number_of_copies += $numberOfCopies;
-
-            $data = [];
-            for ($i = 0; $i < $numberOfCopies; $i++) {
-                $data[] = ["book_id" => $book->id];
-            }
-
-            $timestamp = Carbon::now();
-            foreach ($data as &$record) {
-                $record['created_at'] = $timestamp;
-                $record['updated_at'] = $timestamp;
-            }
-            Copy::insert($data);
+            $book->number_of_copies += 1;
             $book->save();
 
+            $copy = Copy::create(['book_id' => $book->id]);
+
             DB::commit();
-            return response()->json(['message' => 'success'], 200);
+            return response()->json($copy, 200);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'error'], 400);

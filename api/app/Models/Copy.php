@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Copy extends Model
 {
     use HasFactory;
+    protected $fillable = ['book_id'];
+
 }

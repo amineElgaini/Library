@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { PersonIcon } from "@radix-ui/react-icons";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useGetUser } from "@/hooks/reactQuery/useUsers";
-import LoadinLodingSpinner from "@/components/LodingSpinner";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 function MoreUserDetails({ user }) {
   const [userId, setUserId] = useState();
@@ -70,7 +69,7 @@ function MoreUserDetails({ user }) {
                 {moreUserInfo?.data?.data.howManyStillBorrowedBooks}
               </div>
             </div>
-            <LoadinLodingSpinner isLoading={isLoading} />
+            <LoadingSpinner isLoading={isLoading} />
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

@@ -3,7 +3,7 @@ import { request } from "@/utils/axios-utils";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 
-// fetch
+// fetch books
 const fetchBooks = ({ queryKey }) => {
   const params = queryKey[1];
   return request({ url: "/books", params });
@@ -15,6 +15,31 @@ export const useBooksData = (filters) => {
     queryFn: fetchBooks,
   });
 };
+
+// fetch book
+const fetchBook = ({ queryKey }) => {
+  const id = queryKey[1];
+  return request({ url: `books/${id}` });
+};
+
+export const useBookData = (id) => {
+  return useQuery({
+    queryKey: ["book", id],
+    queryFn: fetchBook,
+  });
+};
+
+// fetch copies
+// const fetchCopies = (id) => {
+//   return request({ url: `/copies/${id}` });
+// };
+
+// export const useCopiesData = (id) => {
+//   return useQuery({
+//     queryKey: ["copies", id],
+//     queryFn: fetchCopies,
+//   });
+// };
 
 // create
 const addBook = (book) => {
@@ -29,6 +54,24 @@ export const useAddBookData = () => {
     onError: (error) => toast.error(error.message),
     onSuccess: () => {
       toast.success("Book Added Succefuly"),
+        queryClient.refetchQueries({ queryKey: ["borrowingRecordsData"] });
+    },
+  });
+};
+
+const addCopy = (book) => {
+  console.log(book);
+  return request({ url: `/books/${book}/copies`, method: "post" });
+};
+
+export const useAddCopyData = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: addCopy,
+    onError: (error) => toast.error(error.message),
+    onSuccess: () => {
+      toast.success("Copy Added Succefuly"),
         queryClient.refetchQueries({ queryKey: ["borrowingRecordsData"] });
     },
   });

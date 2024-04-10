@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useBooksData } from "@/hooks/reactQuery/useManageBooks";
+import { useBooksData } from "@/hooks/reactQuery/useBooks";
 import BookCard from "./components/BookCard";
 import BookLoadingCard from "./components/BookLoadingCard";
 import BookFilter from "./components/BookFilter";
@@ -24,9 +24,9 @@ function Books() {
         {isLoading &&
           Array(10)
             .fill(null)
-            .map((_, index) => <BookLoadingCard key={index} />)
-        }
-        {!isLoading  && isSuccess &&
+            .map((_, index) => <BookLoadingCard key={index} />)}
+        {!isLoading &&
+          isSuccess &&
           data?.data.data.map((book) => {
             return <BookCard key={book.bookId} book={book} />;
           })}

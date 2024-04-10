@@ -24,7 +24,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useAddBookData } from "@/hooks/reactQuery/useManageBooks";
+import { useAddBookData } from "@/hooks/reactQuery/useBooks";
 function AddBook() {
   const [ISBN, setISBN] = useState("");
   const [title, setTitle] = useState("");
@@ -41,7 +41,7 @@ function AddBook() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm" className="flex gap-2">
+        <Button size="sm" variant="violet" className="flex gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -53,9 +53,9 @@ function AddBook() {
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"
+              d="M12 4.5v15m7.5-7.5h-15"
             />
-          </svg>
+          </svg>Book
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
