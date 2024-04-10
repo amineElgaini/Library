@@ -9,6 +9,10 @@
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_books_info` AS select `copies`.`book_id` AS `bookId`,`books`.`title` AS `title`,`books`.`ISBN` AS `isbn`,`books`.`genre` AS `genre`,`books`.`number_of_copies` AS `numberOfCopies`,cast(sum(`copies`.`availability_status`) as signed) AS `availableBooks` from (`books` join `copies` on(`books`.`id` = `copies`.`book_id`)) group by `books`.`id`;
 
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_get_last_borrow_for_last_7_days` AS select cast(`borrowing_records`.`borrowing_date` as date) AS `borrowing_date`,count(0) AS `borrows` from ((`borrowing_records` join `copies` on(`borrowing_records`.`copy_id` = `copies`.`id`)) join `books` on(`books`.`id` = `copies`.`book_id`)) where `borrowing_records`.`borrowing_date` between curdate() - interval 6 day and curdate() + interval 1 day group by cast(`borrowing_records`.`borrowing_date` as date) order by `borrowing_records`.`borrowing_date` limit 7;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_get_last_seven_days` AS select curdate() + interval 1 day - interval `numbers`.`number` day AS `date` from (select 1 AS `number` union select 2 AS `2` union select 3 AS `3` union select 4 AS `4` union select 5 AS `5` union select 6 AS `6` union select 7 AS `7`) `numbers`;
+
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_more_user_info` AS select `users`.`id` AS `id`,`users`.`username` AS `username`,`users`.`email` AS `email`,`HowManyBorrowedBooks`(`users`.`id`) AS `how_many_borrowed_books`,`HowManyStillBorrowedBooks`(`users`.`id`) AS `how_many_still_borrowed_books` from `users`;
 
 CREATE DEFINER=`root`@`localhost` FUNCTION `anAvailableCopy`(book_id_value int) RETURNS int(11)
@@ -20,7 +24,8 @@ END;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `borrow`(IN user_id_value int, IN book_id_value int, IN borrowing_days_value int)
 BEGIN
   	DECLARE copy_id_value int;
-  	DECLARE error_message VARCHAR(255) DEFAULT 'an error occured';
+  	DECLARE error_message VARCHAR(255) DEFAULT 'An Error';
+  	DECLARE borrowingTime TIMESTAMP DEFAULT now();
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
   	BEGIN
     	ROLLBACK;
@@ -30,25 +35,26 @@ BEGIN
 	START TRANSACTION;
 	
 	IF (!userExist(user_id_value)) THEN
-		SET error_message = 'User Is Not Found';
+		SET error_message = 'User Not Found';
 		SIGNAL SQLSTATE '45000';
 	END IF;
 	
 	set copy_id_value = anAvailableCopy(book_id_value);
 	
 	IF (ISNULL(copy_id_value)) THEN
-		SET error_message = 'copy Is Not Found';
+		SET error_message = 'No Availble Copies';
 		SIGNAL SQLSTATE '45000';
 	END IF;
 	
 	
 	update copies set availability_status = 0 where id = copy_id_value;
 	
-	insert into borrowing_records(user_id, copy_id, borrowing_date, due_date)
-	values(user_id_value, copy_id_value, now(), DATE_ADD(now(), INTERVAL borrowing_days_value DAY));
+	insert into borrowing_records(user_id, copy_id, borrowing_date, due_date, created_at, updated_at)
+	values(user_id_value, copy_id_value, now(), DATE_ADD(now(), INTERVAL borrowing_days_value DAY),borrowingTime,borrowingTime);
 	
 	commit;
-	select 'success' as success;
+	select 'success';
+
 END;
 
 CREATE DEFINER=`root`@`localhost` FUNCTION `HowManyBorrowedBooks`(user_id_value int) RETURNS int(11)
@@ -76,12 +82,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `returnBook`(IN borrowing_record_id_
 BEGIN
 
 	DECLARE user_id_value, copy_id_value, number_of_late_days_value , fine_amount_value INT;
-    DECLARE actual_retrun_date_value, return_date_value DATE;
-    DECLARE error_message VARCHAR(255) DEFAULT 'an error occured';
+   DECLARE return_date_value TIMESTAMP;
+    DECLARE error_message VARCHAR(255) DEFAULT 'An Error';
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
   	BEGIN
     	ROLLBACK;
-    	SELECT error_message as error;
+    	select error_message as error;
   	END;
   	START TRANSACTION;
 
@@ -91,23 +97,23 @@ BEGIN
 
         UPDATE borrowing_records SET actual_return_date = return_date_value where id = borrowing_record_id_value;
 
-        SELECT
-        	user_id, copy_id, DATEDIFF(actual_return_date, due_date), (DATEDIFF(actual_return_date, borrowing_date) + 1) * (SELECT default_fine_per_day FROM settings_table)
+		SELECT
+        	user_id, copy_id, DATEDIFF(actual_return_date, due_date), (DATEDIFF(actual_return_date, borrowing_date) + 1) * (SELECT default_fine_per_day FROM settings_table limit 1)
         into
         	user_id_value, copy_id_value, number_of_late_days_value, fine_amount_value
         FROM
         	borrowing_records
         WHERE 
         	id = borrowing_record_id_value;
-      
+        	
 		UPDATE copies set availability_status = 1 WHERE id = copy_id_value;
-		
-        INSERT INTO fines(user_id, borrowing_record_id, number_of_late_days, fine_amount, payment_status, created_at, updated_at) VALUES(user_id_value, borrowing_record_id_value, number_of_late_days_value, fine_amount_value, IF(fine_amount_value = 0, 1, 0), return_date_value, return_date_value);
-        
+
+        INSERT INTO fines(user_id, borrowing_record_id, number_of_late_days, fine_amount, payment_status, created_at, updated_at) VALUES(user_id_value, borrowing_record_id_value, number_of_late_days_value, fine_amount_value, 0, return_date_value, return_date_value);
+
         COMMIT;
         select 'success';
     ELSE
-    	SET error_message = 'book already returned';
+    	SET error_message = 'Book Already Returned';
 		SIGNAL SQLSTATE '45000';
 	END IF;
 END;
@@ -119,6 +125,8 @@ BEGIN
 		
 	return res;
 END;
+
+
 
 
 
