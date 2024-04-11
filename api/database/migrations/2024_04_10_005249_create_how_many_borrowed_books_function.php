@@ -8,7 +8,7 @@ class CreateHowManyBorrowedBooksFunction extends Migration
     public function up()
     {
         DB::unprepared('
-            CREATE FUNCTION `HowManyBorrowedBooks`(user_id_value INT) RETURNS INT
+            CREATE FUNCTION `HowManyBorrowedBooks`(user_id_value INT) RETURNS INT DETERMINISTIC
             BEGIN
                 RETURN (SELECT COUNT(*) FROM borrowing_records WHERE user_id = user_id_value);
             END
