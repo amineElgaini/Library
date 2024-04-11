@@ -3,7 +3,11 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Permission;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,11 +16,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        // Create the admin role
+        $adminPermission = Permission::create([
+            'title' => 'admin',
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Create a user
+        $user = User::factory()->create([
+            'username' => 'amine1',
+            'email' => 'amine1@gmail.com',
+            'password' => bcrypt('amine1'),
+        ]);
+
+        // Attach the admin role to the user
+        $user->permissions()->attach($adminPermission);
     }
 }

@@ -25,7 +25,16 @@ class BookController extends Controller
 
         return DB::table('books')
             ->leftJoin('copies', 'books.id', '=', 'copies.book_id')
-            ->select("books.id as bookId", "title", "publication_date as publicationDate", "additional_details as additionalDetails", "isbn", "genre", "number_of_copies as numberOfCopies", DB::raw("CAST(COALESCE(SUM(availability_status), 0) AS INT) as availableCopies"))
+            ->select(
+                "books.id as bookId",
+                "title",
+                "publication_date as publicationDate",
+                "additional_details as additionalDetails",
+                "isbn",
+                "genre",
+                "number_of_copies as numberOfCopies",
+                DB::raw("CAST(COALESCE(SUM(availability_status), 0) AS UNSIGNED) as availableCopies")
+            )
             ->groupBy('books.id')
             ->where($queryItems)
             ->paginate();
