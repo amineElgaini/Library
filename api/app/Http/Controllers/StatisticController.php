@@ -59,14 +59,40 @@ class StatisticController extends Controller
 
     public function lastSevenDaysBorrows()
     {
-        $records = VwGetLastSevenDay::leftJoin('vw_get_last_borrow_for_last_7_days', 'vw_get_last_seven_days.date', '=', 'vw_get_last_borrow_for_last_7_days.borrowing_date')
+        $records = DB::table(DB::raw("
+    (SELECT DATE_FORMAT(CURDATE() + INTERVAL 1 DAY - INTERVAL numbers.number DAY, '%Y-%m-%d') AS `date`
+    FROM (
+        SELECT 1 AS `number`
+        UNION SELECT 2 AS `number`
+        UNION SELECT 3 AS `number`
+        UNION SELECT 4 AS `number`
+        UNION SELECT 5 AS `number`
+        UNION SELECT 6 AS `number`
+        UNION SELECT 7 AS `number`
+    ) numbers) as last_seven_days"))
+            ->leftJoin(DB::raw("
+        (SELECT
+            CAST(`borrowing_records`.`borrowing_date` AS DATE) AS `borrowing_date`,
+            COUNT(0) AS `borrows`
+        FROM
+            ((`borrowing_records`
+            JOIN `copies` ON (`borrowing_records`.`copy_id` = `copies`.`id`))
+            JOIN `books` ON (`books`.`id` = `copies`.`book_id`))
+        WHERE
+            `borrowing_records`.`borrowing_date` BETWEEN CURDATE() - INTERVAL 6 DAY AND CURDATE() + INTERVAL 1 DAY
+        GROUP BY
+            CAST(`borrowing_records`.`borrowing_date` AS DATE)
+        ORDER BY
+            `borrowing_records`.`borrowing_date`
+        LIMIT 7) as last_borrow_for_last_seven_days
+    "), 'last_seven_days.date', '=', 'last_borrow_for_last_seven_days.borrowing_date')
             ->select([
-                'vw_get_last_seven_days.date',
-                DB::raw('DAYNAME(vw_get_last_seven_days.date) AS day_name'),
-                DB::raw('DAYOFWEEK(vw_get_last_seven_days.date) AS day_number'),
+                'last_seven_days.date',
+                DB::raw('DAYNAME(last_seven_days.date) AS day_name'),
+                DB::raw('DAYOFWEEK(last_seven_days.date) AS day_number'),
                 DB::raw('CASE WHEN borrows IS NULL THEN 0 ELSE borrows END AS borrows')
             ])
-            ->orderBy('vw_get_last_seven_days.date')
+            ->orderBy('last_seven_days.date')
             ->get();
         return LastSevenDaysBorrowsResource::collection($records);
     }

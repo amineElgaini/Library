@@ -43,7 +43,15 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return new UserResource(DB::select("SELECT * FROM vw_more_user_info where id = $user->id")[0]);
+        $user = User::select([
+            'id',
+            'username',
+            'email',
+            User::raw('HowManyBorrowedBooks(users.id) as how_many_borrowed_books'),
+            User::raw('HowManyStillBorrowedBooks(users.id) as how_many_still_borrowed_books')
+        ])->where('id', $user->id)
+            ->first();
+        return new UserResource($user);
     }
 
 

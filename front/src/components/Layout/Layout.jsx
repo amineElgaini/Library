@@ -39,13 +39,12 @@ const links = {
   },
 };
 
-// admin: 4,
 
 function Layout() {
   const { auth, setAuth } = useAuth();
   const [isFetchingAuth, setIsFetchingAuth] = useState(true);
   const { data, isLoading, isSuccess } = useGetLogedInUserInfo();
-
+console.log(auth)
   useEffect(() => {
     if (!isLoading) {
       setIsFetchingAuth(false);

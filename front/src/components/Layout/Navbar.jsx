@@ -9,13 +9,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Users } from "lucide-react";
 
+const ROLES = {
+  admin: 1
+}
+
 function Navbar({ links, auth }) {
   const location = useLocation();
-
   return (
     <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
       <img className="w-[30px]" src="./logo.png" alt="" />
-      {auth?.roles?.find((role) => [4]?.includes(role)) && (
+      {auth?.roles?.find((role) => [ROLES.admin]?.includes(role)) && (
         <>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

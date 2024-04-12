@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import { Menu, Users } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "../ui/button";
-
+const ROLES = {
+  admin: 1,
+};
 function BurgarNavbar({ links, auth }) {
   const location = useLocation();
 
@@ -18,7 +20,7 @@ function BurgarNavbar({ links, auth }) {
       <SheetContent side="left">
         <nav className="grid gap-6 text-lg font-medium">
           <img className="w-[30px]" src="./logo.png" alt="" />
-          {auth?.roles?.find((role) => [4]?.includes(role)) && (
+          {auth?.roles?.find((role) => [ROLES.admin]?.includes(role)) && (
             <>
               <div className="flex items-center">
                 <Users className="mr-2 h-6 w-6" />

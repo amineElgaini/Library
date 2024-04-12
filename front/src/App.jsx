@@ -37,7 +37,7 @@ ChartJS.register(
 );
 
 const ROLES = {
-  admin: 4,
+  admin: 1,
 };
 
 function App() {
