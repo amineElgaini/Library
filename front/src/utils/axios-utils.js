@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-const client = axios.create({baseURL: `${import.meta.env.VITE_API_KEY}/api`})
+
+const client = axios.create({baseURL: `${import.meta.env.VITE_API_KEY}/api`,
+})
 
 export const request = ({...options}) => {
   const accessToken = localStorage.getItem("accessToken");

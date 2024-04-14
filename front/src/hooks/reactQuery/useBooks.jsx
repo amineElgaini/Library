@@ -29,18 +29,6 @@ export const useBookData = (id) => {
   });
 };
 
-// fetch copies
-// const fetchCopies = (id) => {
-//   return request({ url: `/copies/${id}` });
-// };
-
-// export const useCopiesData = (id) => {
-//   return useQuery({
-//     queryKey: ["copies", id],
-//     queryFn: fetchCopies,
-//   });
-// };
-
 // create
 const addBook = (book) => {
   return request({ url: "/books", method: "post", data: book });
@@ -60,7 +48,7 @@ export const useAddBookData = () => {
 };
 
 const addCopy = (book) => {
-  console.log(book);
+  console.log("books:",book);
   return request({ url: `/books/${book}/copies`, method: "post" });
 };
 

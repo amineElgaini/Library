@@ -3,7 +3,6 @@ import { Doughnut } from "react-chartjs-2";
 
 function BorrowedBooksNow() {
   const { data: dataChart, isLoading } = useBorrowedBooksCount();
-  console.log(isLoading, dataChart?.data);
 
   const data = {
     labels: ["Available", "Borrowed"],

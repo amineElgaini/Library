@@ -17,7 +17,6 @@ function AddCopy() {
   const [bookId, setBookId] = useState(-1);
   const { data: book, isLoading } = useBookData(bookId);
   const { mutate, isPending, data: newCopy } = useAddCopyData();
-  console.log(isPending);
   return (
     <Dialog>
       <DialogTrigger>
