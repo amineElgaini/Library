@@ -29,7 +29,7 @@ function BooksTable({ books }) {
             <TableHead className="w-[100px]">id</TableHead>
             <TableHead>isbn</TableHead>
             <TableHead>title</TableHead>
-            {/* <TableHead>Action</TableHead> */}
+            <TableHead>Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -39,6 +39,7 @@ function BooksTable({ books }) {
                 <TableCell className="font-medium">{book.bookId}</TableCell>
                 <TableCell>{book.isbn}</TableCell>
                 <TableCell>{book.title}</TableCell>
+                <TableCell>{book.genre}</TableCell>
                 {/* <TableCell className="flex items-center gap-3"> */}
                   {/* <More book={book} /> */}
                   {/* - <Edit book={book} /> */}

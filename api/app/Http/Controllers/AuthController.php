@@ -19,6 +19,7 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken("auth_token")->plainTextToken;
+        
         $roles = $user->permissions()->get()->pluck('id');
 
         return response()->json(['roles' => $roles, 'username' => $user->username, 'token' => $token]);

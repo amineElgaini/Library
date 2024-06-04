@@ -102,13 +102,13 @@ function AddBook() {
           </div>
 
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label className={"whitespace-nowrap"}>Publicated At</Label>
+            <Label className="whitespace-nowrap">Publication Date</Label>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant={"outline"}
                   className={cn(
-                    "w-[280px] justify-start text-left font-normal",
+                    "col-span-2 justify-start text-left font-normal",
                     !publicationDate && "text-muted-foreground"
                   )}
                 >
@@ -131,14 +131,14 @@ function AddBook() {
             </Popover>
           </div>
 
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="grid grid-cols-4 items-start gap-4">
             <Label htmlFor="genre" className="text-right">
-              Genre
+              description
             </Label>
             <Textarea
               className="col-span-3"
-              placeholder="Type your message here."
-              id="message"
+              placeholder="Type your description here."
+              id="description"
               value={additionalDetails}
               onChange={(e) => setAdditionalDetails(e.target.value)}
             />

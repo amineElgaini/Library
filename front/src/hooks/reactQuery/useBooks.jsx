@@ -29,7 +29,26 @@ export const useBookData = (id) => {
   });
 };
 
-// create
+// add copy
+const addCopy = (book) => {
+  console.log("books:", book);
+  return request({ url: `/books/${book}/copies`, method: "post" });
+};
+
+export const useAddCopyData = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: addCopy,
+    onError: (error) => toast.error(error.message),
+    onSuccess: () => {
+      toast.success("Copy Added Succefuly"),
+        queryClient.refetchQueries({ queryKey: ["books"] });
+    },
+  });
+};
+
+// create book
 const addBook = (book) => {
   return request({ url: "/books", method: "post", data: book });
 };
@@ -42,30 +61,12 @@ export const useAddBookData = () => {
     onError: (error) => toast.error(error.message),
     onSuccess: () => {
       toast.success("Book Added Succefuly"),
-        queryClient.refetchQueries({ queryKey: ["borrowingRecordsData"] });
+        queryClient.refetchQueries({ queryKey: ["books"] });
     },
   });
 };
 
-const addCopy = (book) => {
-  console.log("books:",book);
-  return request({ url: `/books/${book}/copies`, method: "post" });
-};
-
-export const useAddCopyData = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: addCopy,
-    onError: (error) => toast.error(error.message),
-    onSuccess: () => {
-      toast.success("Copy Added Succefuly"),
-        queryClient.refetchQueries({ queryKey: ["borrowingRecordsData"] });
-    },
-  });
-};
-
-// update
+// update book
 const updateBook = (book) => {
   return request({ url: `/books/${book.id}`, method: "patch", data: book });
 };
@@ -83,18 +84,19 @@ export const useUpdateBook = () => {
   });
 };
 
-// delete
-const deleteUser = (id) => {
+// delete book
+const deleteBook = (id) => {
   return request({
     url: `/books/${id}`,
     method: "delete",
   });
 };
 
-export const useDeleteUser = () => {
+export const useDeleteBook = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: deleteUser,
+    mutationFn: deleteBook,
     onError: (error) => toast.error(error.message),
     onSuccess: () => {
       toast.success("Book Is Deleted Succefuly"),

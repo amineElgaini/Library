@@ -15,8 +15,8 @@ import { useLogin } from "@/hooks/reactQuery/useAuth";
 import { Loader2 } from "lucide-react";
 
 function Login() {
-  const [email, setEmail] = useState("amine@gmail.com");
-  const [password, setPassword] = useState("amine");
+  const [email, setEmail] = useState("amine1@gmail.com");
+  const [password, setPassword] = useState("amine1");
 
   const { mutate: login, isPending } = useLogin();
 
