@@ -12,7 +12,7 @@ class Book extends Model
     protected $fillable = [
         'title',
         'ISBN',
-        'genre',
+        'category_id',
         'publication_date',
         'additional_details',
     ];

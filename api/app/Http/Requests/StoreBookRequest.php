@@ -25,7 +25,7 @@ class StoreBookRequest extends FormRequest
         return [
             "ISBN" => ['required', 'string', 'unique:books,isbn'],
             "title" => ['required', 'string'],
-            "genre" => ['required', 'string'],
+            "categoryId" => ['required', 'integer'],
             "publicationDate" => ['required', 'date'],
             "additionalDetails" => ['required', 'string']
         ];
@@ -34,6 +34,7 @@ class StoreBookRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
+            "category_id" => $this->categoryId,
             "publication_date" => $this->publicationDate,
             "additional_details" => $this->additionalDetails
         ]);

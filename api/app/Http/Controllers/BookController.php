@@ -23,15 +23,18 @@ class BookController extends Controller
         $filter = new BookFilter();
         $queryItems = $filter->transform($request);
 
+
         return DB::table('books')
             ->leftJoin('copies', 'books.id', '=', 'copies.book_id')
+            ->leftJoin('categories', 'books.category_id', '=', 'categories.id')
             ->select(
                 "books.id as bookId",
                 "title",
                 "publication_date as publicationDate",
                 "additional_details as additionalDetails",
                 "isbn",
-                "genre",
+                "category_id",
+                "categories.name as category_name",
                 "number_of_copies as numberOfCopies",
                 DB::raw("CAST(COALESCE(SUM(availability_status), 0) AS UNSIGNED) as availableCopies")
             )

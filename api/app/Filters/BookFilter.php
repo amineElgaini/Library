@@ -9,11 +9,12 @@ class BookFilter extends ApiFilter
 
     protected $safeParms = [
         'title' => ['eq', 'like'],
-        'genre' => ['eq', 'like'],
+        'categoryId' => ['eq'],
         'publicationDate' => ['eq', 'gt', 'lt'],
     ];
     protected $columnMap = [
         'publicationDate' => 'publication_date',
+        'categoryId' => 'category_id',
     ];
     protected $operatorMap = [
         'eq' => '=',
