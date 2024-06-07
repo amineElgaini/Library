@@ -4,17 +4,15 @@ This is a web application for managing a library's book inventory and borrowing 
 
 ## Technologies Used
 
-- **Frontend:** React.js, React Router, Axios, Tailwind CSS
-- **Backend:** Laravel, MySQL
+- **Frontend:** React.js, React Router, Axios, Tailwind CSS, shadcn/ui
+- **Backend:** Laravel, MySQL, Sanctum
 
 ## Features
 
-- **User Authentication:** Users can register, login, and update their profiles.
+- **User Authentication:** Users can register, login.
 - **Browsing Books:** Users can browse books with filters and search functionality.
-- **Borrowing Books:** Users can borrow books for a specified duration.
-- **Returning Books:** Users can return books after borrowing.
-- **Admin Dashboard:** Admins can manage books, users, and borrowing records.
-- **Statistics Page:** Admins can view statistics on popular books and users.
+- **Admin Dashboard:** Admins can manage books, users, and borrowing.
+- **Statistics Page:** Admins can look at statistics about books and users.
 
 ## Installation
 

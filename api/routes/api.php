@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\BorrowingRecordController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CopyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatisticController;
@@ -55,6 +56,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
 });
 
+
+// Manage Categories
+Route::apiResource('categories', CategoryController::class)->middleware(['auth:sanctum', 'can:admin'])->except(['index', 'show']);
+// Show categories
+Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 
 // Manage Books
 Route::apiResource('books', BookController::class)->middleware(['auth:sanctum', 'can:admin'])->except(['index', 'show']);
