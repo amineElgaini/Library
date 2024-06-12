@@ -1,6 +1,6 @@
 import { Button } from "./ui/button";
 
-function Pagination({ setFilters, pagination }) {
+function Pagination({ setFilter, pagination }) {
   return (
     <div className="flex gap-2">
       <Button
@@ -9,7 +9,7 @@ function Pagination({ setFilters, pagination }) {
         disabled={pagination?.current_page === 1}
         onClick={() => {
           if (pagination?.current_page !== 1) {
-            setFilters((p) => {
+            setFilter((p) => {
               return { ...p, page: pagination?.current_page - 1 };
             });
           }
@@ -23,7 +23,7 @@ function Pagination({ setFilters, pagination }) {
         disabled={pagination?.current_page === pagination?.last_page}
         onClick={() => {
           if (pagination?.current_page !== pagination?.last_page) {
-            setFilters((p) => {
+            setFilter((p) => {
               return { ...p, page: pagination?.current_page + 1 };
             });
           }

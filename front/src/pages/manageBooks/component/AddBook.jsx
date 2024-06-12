@@ -25,17 +25,35 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useAddBookData } from "@/hooks/reactQuery/useBooks";
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useCategoriesData } from "@/hooks/reactQuery/useCategories";
+
 function AddBook() {
   const [ISBN, setISBN] = useState("");
   const [title, setTitle] = useState("");
-  const [genre, setGenre] = useState("");
+  const [categoryId, setCategory] = useState("");
   const [publicationDate, setPublicationDate] = useState("");
   const [additionalDetails, setAdditionalDetails] = useState("");
+  const {
+    data: categories,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useCategoriesData();
 
   const { mutate, isPending } = useAddBookData();
 
   const handleSubmit = () => {
-    mutate({ ISBN, title, genre, publicationDate, additionalDetails });
+    mutate({ ISBN, title, categoryId, publicationDate, additionalDetails });
   };
 
   return (
@@ -55,7 +73,8 @@ function AddBook() {
               strokeLinejoin="round"
               d="M12 4.5v15m7.5-7.5h-15"
             />
-          </svg>Book
+          </svg>
+          Book
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -89,16 +108,29 @@ function AddBook() {
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="genre" className="text-right">
-              Genre
+            <Label htmlFor="category" className="text-right">
+              Category
             </Label>
-            <Input
-              id="genre"
-              onChange={(e) => setGenre(e.target.value)}
-              value={genre}
-              className="col-span-3"
-              placeholder="Genre"
-            />
+            <Select
+              value={categoryId}
+              onValueChange={(v) => {
+                setCategory(v);
+              }}
+            >
+              <SelectTrigger className="w-[150px]">
+                <SelectValue placeholder="Select Category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Categories</SelectLabel>
+                  {categories?.data?.data.map((category) => (
+                    <SelectItem key={category.id} value={category.id}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="grid grid-cols-4 items-center gap-4">
@@ -132,7 +164,7 @@ function AddBook() {
           </div>
 
           <div className="grid grid-cols-4 items-start gap-4">
-            <Label htmlFor="genre" className="text-right">
+            <Label htmlFor="description" className="text-right">
               description
             </Label>
             <Textarea

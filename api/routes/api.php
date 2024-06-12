@@ -73,7 +73,6 @@ Route::group(['middleware' => ['auth:sanctum', 'can:admin']], function () {
     Route::apiResource('books.copies', CopyController::class)->shallow();
 });
 
-
 // Manage Borrowing Records
 Route::group(['middleware' => ['auth:sanctum', 'can:admin']], function () {
     Route::apiResource('borrowingRecords', BorrowingRecordController::class);

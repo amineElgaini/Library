@@ -64,7 +64,7 @@ function MoreUserDetails({ user }) {
               </div>
               <div>
                 <span className="dark:text-white text-black font-bold mr-2">
-                  Total Book Still Borrowed Books:
+                  Total Still Borrowed Books:
                 </span>
                 {moreUserInfo?.data?.data.howManyStillBorrowedBooks}
               </div>

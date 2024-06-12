@@ -8,7 +8,7 @@ function BorrowBook() {
   const [filter, setFilter] = useState({
     page: 1,
     "title[like]": "",
-    "genre[like]": "",
+    "categoryId[eq]": "",
   });
 
   const { data, isError, isLoading } = useBooksData(filter);

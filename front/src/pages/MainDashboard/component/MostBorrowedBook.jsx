@@ -20,6 +20,7 @@ import { useTopBooks } from "@/hooks/reactQuery/useStatistics";
 
 function MostBorrowedBook() {
   const { data: topBooks, isLoading: topBooksIsLoading } = useTopBooks();
+  console.log(topBooks);
 
   return (
     <Card className="xl:col-span-2">

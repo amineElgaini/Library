@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 
 const returnBorrowedBook = ({ borrowId }) => {
+  console.log(borrowId);
   return request({
     url: `/borrowingRecords/returnBorrowedBook/${borrowId}`,
     method: "post",

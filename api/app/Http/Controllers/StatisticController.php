@@ -44,9 +44,9 @@ class StatisticController extends Controller
     {
         return Book::select(
             'books.id',
-            'books.isbn',
+            'books.ISBN',
             'books.title',
-            DB::raw('cast(SUM(CASE WHEN actual_return_date IS NULL THEN 1 ELSE 0 END)as int) AS borrowedNow'),
+            DB::raw('CAST(SUM(CASE WHEN actual_return_date IS NULL THEN 1 ELSE 0 END) AS UNSIGNED) AS borrowedNow'),
             DB::raw('COUNT(*) as borrowedTimes')
         )
             ->join('copies', 'copies.book_id', '=', 'books.id')

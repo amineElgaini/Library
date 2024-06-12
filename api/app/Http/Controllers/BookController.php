@@ -34,13 +34,13 @@ class BookController extends Controller
                 "additional_details as additionalDetails",
                 "isbn",
                 "category_id",
-                "categories.name as category_name",
+                "categories.name as categoryName",
                 "number_of_copies as numberOfCopies",
                 DB::raw("CAST(COALESCE(SUM(availability_status), 0) AS UNSIGNED) as availableCopies")
             )
             ->groupBy('books.id')
             ->where($queryItems)
-            ->paginate();
+            ->paginate(10);
     }
 
     /**

@@ -10,30 +10,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import AddBook from "@/pages/manageBooks/component/AddBook";
+// import AddBook from "@/pages/manageBooks/component/AddBook";
+import { useCategoriesData } from "@/hooks/reactQuery/useCategories";
 
 function BookFilter({ filter, setFilter, pagination }) {
+  const {
+    data: categories,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useCategoriesData();
   return (
     <div className="flex justify-between gap-2 items-center flex-wrap">
       <div className="flex items-center gap-2 flex-wrap">
         <Select
-          value={filter["genre[like]"]}
+          value={filter["categoryId[eq]"]}
           onValueChange={(v) => {
             setFilter((p) => {
-              return { ...p, ["genre[like]"]: v === "all" ? "" : v };
+              return { ...p, ["categoryId[eq]"]: v === "0" ? "" : v };
             });
           }}
         >
           <SelectTrigger className="w-[150px]">
-            <SelectValue placeholder="Select Genre" />
+            <SelectValue placeholder="Select Category" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Categories</SelectLabel>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="fun">Fun</SelectItem>
-              <SelectItem value="action">Action</SelectItem>
-              <SelectItem value="self thought">Self Thought</SelectItem>
+              <SelectItem value="0">All</SelectItem>
+              {categories?.data?.data.map((category) => (
+                <SelectItem key={category.id} value={category.id}>
+                  {category.name}
+                </SelectItem>
+              ))}
             </SelectGroup>
           </SelectContent>
         </Select>

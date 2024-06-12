@@ -37,7 +37,7 @@ function BookCard({ book }) {
 
                 <div className="flex w-full mt-3 items-center justify-between">
                   <span className="leading-none uppercase rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-700/10">
-                    {book.genre}
+                    {book.categoryName ?? "None"}
                   </span>
 
                   <div className="flex gap-1 text-xs text-muted-foreground">

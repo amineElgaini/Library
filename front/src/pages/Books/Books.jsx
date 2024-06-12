@@ -8,8 +8,9 @@ function Books() {
   const [filter, setFilter] = useState({
     page: 1,
     "title[like]": "",
-    "genre[like]": "",
+    "categoryId[eq]": "",
   });
+  console.log(filter);
   const { data, isLoading, isSuccess, isError } = useBooksData(filter);
   return (
     <div className="container">
