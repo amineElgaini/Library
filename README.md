@@ -1,6 +1,6 @@
 # Library Management System
 
-This is a web application for managing a library's book inventory and borrowing system. It allows users to browse books, borrow them, and return them. Administrators can manage books, users, and borrowing records through an admin dashboard.
+This is a web application for managing a library's book inventory and borrowing system. It allows users to browse books, borrow them, and return them. Administrators can see statistics. Manage books, users, and borrowing records through an admin dashboard.
 
 ## Technologies Used
 
